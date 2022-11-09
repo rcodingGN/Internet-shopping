@@ -95,18 +95,8 @@ export default {
             this.show = false;
         }
         
+
     },
-    // mounted() {
-    //     // 通知Vuex发请求，获取数据并存储在仓库中,
-    //     // 写在这里每次跳转都会重新访问服务器，如果想只访问一次，将this.$store.dispatch('categoryList');放在app.vue中的mounted即可
-    //     // this.$store.dispatch('categoryList');
-    //     /* 
-    //         当组件挂载完毕，让show属性变为false
-    //         如果是不是home路由组件，则让typenav隐藏
-    //      */
-    //     if(this.$route.path!='/home'){
-    //         this.show = false;
-    //     }},
     computed: {
         /**
          * 对象右侧需要一个函数，当使用这个计算属性的时候，右侧函数会立即执行一次

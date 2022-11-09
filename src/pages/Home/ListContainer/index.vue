@@ -6,8 +6,8 @@
                 <!--banner轮播-->
                 <div class="swiper-container" id="mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
+                        <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
+                            <img :src="carousel.imgUrl" />
                         </div>
                         <!-- <div class="swiper-slide">
                             <img src="./images/banner2.jpg" />
@@ -112,22 +112,63 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+// 引入swiper包，在main.js中引入
+import Swiper from 'swiper';
 export default {
     name: 'ShopListContainer',
+    data() {
+        return {
+
+        }
+    },
     mounted() {
         // 派发action：通过Vuex发起ajax请求，将数据存储在仓库中
+        console.log("组件的mounted");
         this.$store.dispatch('getBannerList');
+        //  在new swiper实例之前，页面中结构必须存在，但是在下面new swiper实例发现不行
+        // 因为dispatch当中涉及到异步语句，导致v-for遍历的时候结构还没有完全加载，所以不行
+
+        setTimeout(() => {
+            console.log("初始化swiper实例");
+            var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
+                loop: true,
+                // 如果需要分页器
+                pagination: {
+                    el: ".swiper-pagination",
+                    // 点击小球的时候也会切换图片
+                    clickable: true,
+                },
+                // 如果需要前进后退按钮
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                }
+            })
+        }, 200);
+    },
+    computed: {
+        ...mapState({
+            // bannerList: state => state.home.bannerList
+
+            bannerList: (state) => {
+                // console.log(state);
+                return state.home.bannerList
+            },
+        })
+    },
+    updated() {
+
     },
 }
 </script>
-
 <style lang="less" scoped>
 .list-container {
     width: 1200px;
     margin: 0 auto;
 
     .sortList {
-        height: 464px;
+        height: 515px;
         padding-left: 210px;
 
         .center {
