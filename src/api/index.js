@@ -1,6 +1,7 @@
 // 当前模块用来对所有的API进行统一管理
 import requests from './request.js'
 import mockRequests from './mockAjax'
+
 // 三级联动接口
 // /api/product/getBaseCategoryList get请求 无参数
 // axios发请求返回的结果是promise对象
@@ -16,3 +17,11 @@ export const reqGetbannerList =() => {
     return mockRequests({url:'/banner',method:'get'})
 };
 // export const reqGetbannerList = () => mockRequests.get('/banner')
+
+// 获取floor数据
+export const reqFloorList = () => mockRequests.get('/floor')
+
+// export const reqFloorList =() => {
+//     // 发请求
+//     return mockRequests({url:'/floor',method:'get'})
+// };

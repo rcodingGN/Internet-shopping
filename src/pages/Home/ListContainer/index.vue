@@ -4,12 +4,13 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
+                <ShopCarousel :list="bannerList" />
+                <!-- <div class="swiper-container" ref="mySwiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
                             <img :src="carousel.imgUrl" />
-                        </div>
-                        <!-- <div class="swiper-slide">
+                        </div> -->
+                <!-- <div class="swiper-slide">
                             <img src="./images/banner2.jpg" />
                         </div>
                         <div class="swiper-slide">
@@ -17,15 +18,15 @@
                         </div>
                         <div class="swiper-slide">
                             <img src="./images/banner4.jpg" /> -->
-                        <!-- </div> -->
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
+                <!-- </div> -->
+                <!-- </div> -->
+                <!-- 如果需要分页器 -->
+                <!-- <div class="swiper-pagination"></div> -->
 
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                <!-- 如果需要导航按钮 -->
+                <!-- <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div> -->
             </div>
             <div class="right">
                 <div class="news">
@@ -114,9 +115,10 @@
 <script>
 import { mapState } from "vuex";
 // 引入swiper包，在main.js中引入
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
 export default {
     name: 'ShopListContainer',
+    props: ['list'],
     data() {
         return {
 
@@ -124,7 +126,7 @@ export default {
     },
     mounted() {
         // 派发action：通过Vuex发起ajax请求，将数据存储在仓库中
-        console.log("组件的mounted");
+        // console.log("组件的mounted");
         this.$store.dispatch('getBannerList');
         //  在new swiper实例之前，页面中结构必须存在，但是在下面new swiper实例发现不行
         // 因为dispatch当中涉及到异步语句，导致v-for遍历的时候结构还没有完全加载，所以不行
@@ -160,35 +162,36 @@ export default {
             },
         })
     },
-    watch: {
-        // 监听bannerList数据的变化，因为这条数据发生过变化 --- 有空数组变为具有四个元素的数组
+    // watch: {
+    //     // 监听bannerList数据的变化，因为这条数据发生过变化 --- 有空数组变为具有四个元素的数组
 
-        bannerList: {
-            handler(newValue, oldValue) {
-                // 通过watch监听bannerList属性的属性值变化  如果执行handler方法，代表组件实例身上属性的属性值已有（数组：四个元素）
-                // 下面的函数执行，只能保证bannerList数据存在，但是无法保证v-for执行结束；但v-for执行完毕才会拥有结构（watch无法保证执行结束）
-                // nextTick：在下次DOM更新，循环结束之后，执行延迟回调。在修改数据之后，立即使用这个方法，获取更新后的DOM。
-                this.$nextTick(() => {
-                    // 当执行这个回调的时候：保证服务器数据收到，v-for执行完毕（轮播图的结构已存在）
-                    var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
-                        loop: true,
-                        // 如果需要分页器
-                        pagination: {
-                            el: ".swiper-pagination",
-                            // 点击小球的时候也会切换图片
-                            clickable: true,
-                        },
-                        // 如果需要前进后退按钮
-                        navigation: {
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
-                        }
-                    })
-                })
+    //     bannerList: {
+    //         handler() {
+    //             // 通过watch监听bannerList属性的属性值变化  如果执行handler方法，代表组件实例身上属性的属性值已有（数组：四个元素）
+    //             // 下面的函数执行，只能保证bannerList数据存在，但是无法保证v-for执行结束；但v-for执行完毕才会拥有结构（watch无法保证执行结束）
+    //             // nextTick：在下次DOM更新，循环结束之后，执行延迟回调。在修改数据之后，立即使用这个方法，获取更新后的DOM。
+    //             this.$nextTick(() => {
+    //                 // 当执行这个回调的时候：保证服务器数据收到，v-for执行完毕（轮播图的结构已存在）
+    //                 var mySwiper = new Swiper(this.$refs.mySwiper,
+    //                     {
+    //                         loop: true,
+    //                         // 如果需要分页器
+    //                         pagination: {
+    //                             el: ".swiper-pagination",
+    //                             // 点击小球的时候也会切换图片
+    //                             clickable: true,
+    //                         },
+    //                         // 如果需要前进后退按钮
+    //                         navigation: {
+    //                             nextEl: ".swiper-button-next",
+    //                             prevEl: ".swiper-button-prev",
+    //                         }
+    //                     })
+    //             })
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 }
 </script>
 <style lang="less" scoped>
