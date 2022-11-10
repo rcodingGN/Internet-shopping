@@ -4,7 +4,7 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
+                <div class="swiper-container" ref="mySwiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
                             <img :src="carousel.imgUrl" />
@@ -170,7 +170,8 @@ export default {
                 // nextTick：在下次DOM更新，循环结束之后，执行延迟回调。在修改数据之后，立即使用这个方法，获取更新后的DOM。
                 this.$nextTick(() => {
                     // 当执行这个回调的时候：保证服务器数据收到，v-for执行完毕（轮播图的结构已存在）
-                    var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
+                    var mySwiper = new Swiper(this.$refs.mySwiper,
+                     {
                         loop: true,
                         // 如果需要分页器
                         pagination: {
