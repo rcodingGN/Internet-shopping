@@ -12,7 +12,7 @@
                         </div> -->
                 <!-- <div class="swiper-slide">
                             <img src="./images/banner2.jpg" />
-                        </div>
+                        </div> 
                         <div class="swiper-slide">
                             <img src="./images/banner3.jpg" />
                         </div>

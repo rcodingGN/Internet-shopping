@@ -17,9 +17,7 @@ import store from '@/store';
 import '@/mock/mockServer';
 // 引入swiper样式
 import 'swiper/css/swiper.css';
-
 Vue.config.productionTip = false
-
 
 new Vue({
     // 注册仓库：组件实例身上会多出一个属性 $store

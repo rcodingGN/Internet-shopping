@@ -3,13 +3,30 @@
     <div class="floor">
         <div class="py-container">
             <div class="title clearfix">
-                <h3 class="fl">{{list.name}}</h3>
+                <h3 class="fl">家用电器</h3>
                 <div class="fr">
                     <ul class="nav-tabs clearfix">
-                        <li class="active" v-for="(nav,index) in list.navList" :key="index">
-                            <a href="#tab1" data-toggle="tab">{{nav.text}}</a>
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab">热门</a>
                         </li>
-
+                        <li>
+                            <a href="#tab2" data-toggle="tab">大家电</a>
+                        </li>
+                        <li>
+                            <a href="#tab3" data-toggle="tab">生活电器</a>
+                        </li>
+                        <li>
+                            <a href="#tab4" data-toggle="tab">厨房电器</a>
+                        </li>
+                        <li>
+                            <a href="#tab5" data-toggle="tab">应季电器</a>
+                        </li>
+                        <li>
+                            <a href="#tab6" data-toggle="tab">空气/净水</a>
+                        </li>
+                        <li>
+                            <a href="#tab7" data-toggle="tab">高端电器</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -18,53 +35,55 @@
                     <div class="floor-1">
                         <div class="blockgary">
                             <ul class="jd-list">
-                                <li v-for="(keyword,index) in list.keyword" :key="keyword.id">{{keyword}}</li>
-
+                                <li>节能补贴</li>
+                                <li>4K电视</li>
+                                <li>空气净化器</li>
+                                <li>IH电饭煲</li>
+                                <li>滚筒洗衣机</li>
+                                <li>电热水器</li>
                             </ul>
-                            <img :src="list.imgUrl" />
+                            <img src="./images/floor-1-1.png" />
                         </div>
                         <div class="floorBanner">
-                            <ShopCarousel :list="list.carouselList" />
-                            <!-- 以下原本是轮播图 但是要做轮播图的全局组件，所以代码被复制到carouse组件中 -->
-                            <!-- <div class="swiper-container" id="floor1Swiper" ref="cur">
+                            <div class="swiper-container" id="floor1Swiper">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide" v-for="(carousel,index) in list.carouselList" :key="carousel.id">
-                                        <img :src="carousel.imgUrl">
-                                    </div> -->
-                            <!-- <div class="swiper-slide">
+                                    <div class="swiper-slide">
+                                        <img src="./images/floor-1-b01.png">
+                                    </div>
+                                    <!-- <div class="swiper-slide">
                                         <img src="./images/floor-1-b02.png">
                                     </div>
                                     <div class="swiper-slide">
                                         <img src="./images/floor-1-b03.png">
                                     </div> -->
-                            <!-- </div>  -->
-                            <!-- 如果需要分页器 -->
-                            <!-- <div class="swiper-pagination"></div> -->
+                                </div>
+                                <!-- 如果需要分页器 -->
+                                <div class="swiper-pagination"></div>
 
-                            <!-- 如果需要导航按钮 -->
-                            <!-- <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div> -->
-                            <!-- </div> -->
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
                         </div>
                         <div class="split">
                             <span class="floor-x-line"></span>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[0]" />
+                                <img src="./images/floor-1-2.png" />
                             </div>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[1]" />
+                                <img src="./images/floor-1-3.png" />
                             </div>
                         </div>
                         <div class="split center">
-                            <img :src="list.bigImg" />
+                            <img src="./images/floor-1-4.png" />
                         </div>
                         <div class="split">
                             <span class="floor-x-line"></span>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[2]" />
+                                <img src="./images/floor-1-5.png" />
                             </div>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[3]" />
+                                <img src="./images/floor-1-6.png" />
                             </div>
                         </div>
                     </div>
@@ -76,65 +95,8 @@
 </template>
 
 <script>
-// import Swiper from 'swiper';
 export default {
-    name: 'ShopFloor',
-    props: ['list'],
-    mounted() {
-        /** 
-         * 
-         *  listcontainer放在mounted没有反应，但是现在就可以了，原因是什么？ 
-         *      第一次书写轮播图的时候是在当前组件内部发送请求，动态渲染结构（前提至少服务器数据需要返回，因此当年的写法错误）
-         *      现在写法正确的原因：因为请求是父组件发的，父组件通过props传递过来，结构已经存在的情况下执行mounted
-         * 
-         *       下面的写法正确，但是为了封装轮播图的全局组件，所以需要注释掉，与watch中的方法一致
-         * */
-        // var mySwiper = new Swiper(this.$refs.cur,
-        //     {
-        //         loop: true,
-        //         // 如果需要分页器
-        //         pagination: {
-        //             el: ".swiper-pagination",
-        //             // 点击小球的时候也会切换图片
-        //             clickable: true,
-        //         },
-        //         // 如果需要前进后退按钮
-        //         navigation: {
-        //             nextEl: ".swiper-button-next",
-        //             prevEl: ".swiper-button-prev",
-        //         }
-        //     })
-    },
-    // watch: {
-    //     list: {
-    //         immediate: true,
-    //         handler() {
-    //             /**
-    //              *  立即监听：无论数据有没有发生变化，运行就会监听
-    //              *  因为Floor中的数据是home给的，父亲给的时候就是一个对象，对象里的数据都是存在的没有发生过变化，所以监听不到
-    //              *  打印出来两条数据的原因是有两条floor
-    //             //  */
-    //             // console.log("我在监听floor组件");
-    //             this.$nextTick(() => {
-    //                 var mySwiper = new Swiper(this.$refs.cur,
-    //                     {
-    //                         loop: true,
-    //                         // 如果需要分页器
-    //                         pagination: {
-    //                             el: ".swiper-pagination",
-    //                             // 点击小球的时候也会切换图片
-    //                             clickable: true,
-    //                         },
-    //                         // 如果需要前进后退按钮
-    //                         navigation: {
-    //                             nextEl: ".swiper-button-next",
-    //                             prevEl: ".swiper-button-prev",
-    //                         }
-    //                     })
-    //             })
-    //         }
-    //     }
-    // }
+    name: 'ShopFloor'
 }
 </script>
 

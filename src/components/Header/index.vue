@@ -87,8 +87,8 @@ export default {
             // console.log(this.$router);
 
             // 从根源上解决问题，重写push|replace
-            if(this.$route.query){
-                let location =  { name: 'search', params: { keyword: this.keyword || undefined} };
+            if (this.$route.query) {
+                let location = { name: 'search', params: { keyword: this.keyword || undefined } };
                 location.query = this.$route.query;
                 this.$router.push(location)
             }
