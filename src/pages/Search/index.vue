@@ -12,15 +12,18 @@
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                        <!-- 分类的面包屑 -->
+                        <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+                        <!-- 关键字的面包屑 -->
+                        <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+                        <!-- 品牌面包屑展示 -->
+                        <li class="with-x" v-if="searchParams.keyword">{{searchParams.trademark.split(":")[1]}}<i @click="removeTradeMark">×</i></li>
+
                     </ul>
                 </div>
 
                 <!--selector-->
-                <SearchSelector />
+                <SearchSelector @trademarkInfo="trademarkInfo" />
 
                 <!--details-->
                 <div class="details clearfix">
@@ -177,12 +180,57 @@ export default {
         }) */
         // mapGetters：传递数组，因为getters计算是没有划分模块
         ...mapGetters(['goodsList', 'trademarkList'])
+
     },
     methods: {
         // 向服务器发请求获取search模块数据（根据参数不行返回不同的数据进行展示）
         getData() {
             this.$store.dispatch('getSearchList', this.searchParams);
+        },
+        // 删除分类的名字
+        removeCategoryName() {
+            // 只是将带给服务器的参数置空，还需要重新向服务器发送请求 
+            // 如果带给服务器的参数可有可无，可将相应的字段变为undefined，这个字段就不会带给服务器
+            this.searchParams.categoryName = undefined;
+            this.getData();
+            this.searchParams.category1Id = undefined;
+            this.searchParams.category2Id = undefined;
+            this.searchParams.category3Id = undefined;
+            // 路由地址也需要更改：进行路由跳转
+            // 严谨：本意是删除query，如果当路径当中出现params不应该删除，路由跳转的时候应该带着params参数
+            if (this.$route.params) {
+                this.$router.push({ name: "search", params: this.$route.params });
+            }
+
+        },
+        // 删除header与search关键字
+        removeKeyword() {
+            // 给服务器带的参数searchParams的keyword置空
+            this.searchParams.keyword = undefined;
+            // 需要再次发送请求
+            this.getData();
+            // 通知兄弟组件Header删除关键字
+            this.$bus.$emit('clear')
+            // 进行路由的跳转
+            if (this.$route.query) {
+                this.$router.push({ name: "search", query: this.$route.query });
+            }
+        },
+        // 自定义事件回调
+        trademarkInfo(trademark) {
+            // 1、整理品牌字段的参数 “ID：品牌名称”
+            // console.log('我是父组件', trademark);
+            this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+            // 再次发请求获取search模块列表数据进行展示
+            this.getData();
+        },
+        removeTradeMark() {
+            // 给服务器带的参数searchParams的keyword置空
+            this.searchParams.keyword = undefined;
+            // 需要再次发送请求
+            this.getData();
         }
+
     },
     // 数据监听：监听组件实例身上属性的属性值的变化
     watch: {

@@ -4,7 +4,7 @@
             <div class="fl key brand">品牌</div>
             <div class="value logos">
                 <ul class="logo-list">
-                    <li v-for="(trademark,index) in trademarkList" :key="trademark.tmid">{{trademark.tmName}}</li>
+                    <li v-for="(trademark,index) in trademarkList" :key="trademark.tmid" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
                 </ul>
             </div>
             <div class="ext">
@@ -120,7 +120,19 @@ export default {
     name: 'SearchSelector',
     computed: {
         ...mapGetters(['trademarkList', 'attrsList'])
-    }
+    },
+    methods: {
+        // 品牌的事件处理函数
+        tradeMarkHandler(trademark) {
+            /* 
+                点击品牌，需要整理参数向服务器发送请求以获取相应的数据
+                问题：为什么还是在父组件中发送请求
+                原因：父组件中searchParams参数是要带给服务器的参数，子组件把点击的品牌信息传递给父组件  --- 自定义事件
+            */
+            // console.log(trademark);
+            this.$emit('trademarkInfo', trademark);
+        }
+    },
 }
 </script>
 

@@ -20,9 +20,13 @@ import 'swiper/css/swiper.css';
 Vue.config.productionTip = false
 
 new Vue({
+
+    render: h => h(App),
+    beforeCreate() {
+        Vue.prototype.$bus = this;
+    },
     // 注册仓库：组件实例身上会多出一个属性 $store
     store,
-    render: h => h(App),
     //   注册路由：下面的写法key：value一致，省略value（router小写）
     router,
 
