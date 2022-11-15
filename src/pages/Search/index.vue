@@ -18,36 +18,26 @@
                         <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
                         <!-- 品牌面包屑展示 -->
                         <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTradeMark">×</i></li>
-
+                        <!-- 平台售卖属性值展示 -->
+                        <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttrValue(index)">×</i></li>
                     </ul>
                 </div>
 
                 <!--selector-->
-                <SearchSelector @trademarkInfo="trademarkInfo" />
+                <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
                 <!--details-->
                 <div class="details clearfix">
                     <div class="sui-navbar">
                         <div class="navbar-inner filter">
                             <ul class="sui-nav">
-                                <li class="active">
-                                    <a href="#">综合</a>
+                                <li :class="{active:isOne}" @click="changeOrder('1')">
+                                    <a>综合 <span v-show="isOne" class="iconfont" :class="{'icon-long-arrow-down':isDesc,'icon-long-arrow-up':isAsc}"></span></a>
                                 </li>
-                                <li>
-                                    <a href="#">销量</a>
+                                <li :class="{active:isTwo}" @click="changeOrder('2')">
+                                    <a>价格 <span v-show="isTwo" class="iconfont" :class="{'icon-long-arrow-down':isDesc,'icon-long-arrow-up':isAsc}"></span></a>
                                 </li>
-                                <li>
-                                    <a href="#">新品</a>
-                                </li>
-                                <li>
-                                    <a href="#">评价</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬆</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬇</a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -137,8 +127,8 @@ export default {
                 "categoryName": "",
                 // 关键字
                 "keyword": "",
-                // 排序
-                "order": "",
+                // 排序：初始状态应该是综合|降序
+                "order": "1:desc",
                 // 分页器：代表第几页
                 "pageNo": 1,
                 // 代表每一页展示多少商品
@@ -177,7 +167,19 @@ export default {
             goodsList:state => state.search.searchList.goodsList
         }) */
         // mapGetters：传递数组，因为getters计算是没有划分模块
-        ...mapGetters(['goodsList', 'trademarkList'])
+        ...mapGetters(['goodsList', 'trademarkList']),
+        isOne() {
+            return this.searchParams.order.indexOf('1') != -1
+        },
+        isTwo() {
+            return this.searchParams.order.indexOf('2') != -1
+        },
+        isAsc() {
+            return this.searchParams.order.indexOf('asc') != -1
+        },
+        isDesc() {
+            return this.searchParams.order.indexOf('desc') != -1
+        },
     },
     methods: {
         // 向服务器发请求获取search模块数据（根据参数不行返回不同的数据进行展示）
@@ -220,10 +222,53 @@ export default {
             // 再次发请求获取search模块列表数据进行展示
             this.getData();
         },
+        // 删除点击品牌后的面包屑
         removeTradeMark() {
             // 给服务器带的参数searchParams的keyword置空
             this.searchParams.trademark = undefined;
             // 需要再次发送请求
+            this.getData();
+        },
+        // 收集平台属性回调函数（自定义事件）
+        attrInfo(attr, attrValue) {
+            // ["属性ID：属性值：属性名"]
+            let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+            // 数组需要去重  如果返回的-1 代表数组中没有这个参数  if语句中如果只有一行代码可以省略{}，归为一行
+            if (this.searchParams.props.indexOf(props) == -1) {
+                this.searchParams.props.push(props);
+            };
+
+            this.getData();
+            console.log(attr, attrValue);
+        },
+        // 删除售卖属性
+        removeAttrValue(index) {
+            console.log(index);
+            this.searchParams.props.splice(index, 1);
+            this.getData();
+        },
+        // 排序的操作
+        changeOrder(flag) {
+            // flag形参：它是一个标记，代表用户点击的是综合|价格
+            // let originOrder = this.searchParams.order;
+            // console.log(originOrder);
+            // 获取的最开始的状态
+            let originFlag = this.searchParams.order.split(':')[0];
+            // console.log(originflag);
+            let originSort = this.searchParams.order.split(':')[1];
+            // console.log(originSort);
+            // // 准备一个新的order属性值
+            let newOrder = "";
+            // // 点击的是综合
+            if (flag == originFlag) {
+                newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+            } else {
+                //     // 点击的是价格
+                newOrder = `${flag}:${"desc"}`
+            }
+            // // 将新的order赋予searchParams
+            this.searchParams.order = newOrder;
+            // // 再次发请求
             this.getData();
         }
     },
