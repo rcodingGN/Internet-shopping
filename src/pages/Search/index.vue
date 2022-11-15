@@ -12,10 +12,13 @@
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                        <!-- 分类的面包屑 -->
+                        <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+                        <!-- 关键字的面包屑 -->
+                        <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+                        <!-- 品牌面包屑展示 -->
+                        <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTradeMark">×</i></li>
+
                     </ul>
                 </div>
 
@@ -156,12 +159,10 @@ export default {
         // this.searchParams.category3Id = this.$route.query.category3Id;
         // this.searchParams.categoryName = this.$route.query.categoryName;
         // this.searchParams.keyword = this.$route.query.keyword;
-
         // Object.assign：ES6新增语法，合并对象
         // 在发请求之前，把接口需要传递参数，进行整理（在给服务器发请求之前，把参数）
         Object.assign(this.searchParams, this.$route.query, this.$route.params);
         // console.log(this.$route);
-
     },
     mounted() {
         // 在发请求之前带给服务器参数（searchParams参数发生变化带给服务器）
@@ -177,7 +178,6 @@ export default {
         }) */
         // mapGetters：传递数组，因为getters计算是没有划分模块
         ...mapGetters(['goodsList', 'trademarkList'])
-
     },
     methods: {
         // 向服务器发请求获取search模块数据（根据参数不行返回不同的数据进行展示）
@@ -198,7 +198,6 @@ export default {
             if (this.$route.params) {
                 this.$router.push({ name: "search", params: this.$route.params });
             }
-
         },
         // 删除header与search关键字
         removeKeyword() {
@@ -223,11 +222,10 @@ export default {
         },
         removeTradeMark() {
             // 给服务器带的参数searchParams的keyword置空
-            this.searchParams.keyword = undefined;
+            this.searchParams.trademark = undefined;
             // 需要再次发送请求
             this.getData();
         }
-
     },
     // 数据监听：监听组件实例身上属性的属性值的变化
     watch: {
@@ -243,7 +241,6 @@ export default {
             this.searchParams.category1Id = ''
             this.searchParams.category2Id = ''
             this.searchParams.category3Id = ''
-
         }
     }
 }
@@ -252,37 +249,30 @@ export default {
 <style lang="less" scoped>
 .main {
     margin: 10px 0;
-
     .py-container {
         width: 1200px;
         margin: 0 auto;
-
         .bread {
             margin-bottom: 5px;
             overflow: hidden;
-
             .sui-breadcrumb {
                 padding: 3px 15px;
                 margin: 0;
                 font-weight: 400;
                 border-radius: 3px;
                 float: left;
-
                 li {
                     display: inline-block;
                     line-height: 18px;
-
                     a {
                         color: #666;
                         text-decoration: none;
-
                         &:hover {
                             color: #4cb9fc;
                         }
                     }
                 }
             }
-
             .sui-tag {
                 margin-top: -5px;
                 list-style: none;
@@ -291,7 +281,6 @@ export default {
                 padding: 5px 0 0;
                 margin-bottom: 18px;
                 float: left;
-
                 .with-x {
                     font-size: 12px;
                     margin: 0 5px 5px 0;
@@ -306,7 +295,6 @@ export default {
                     white-space: nowrap;
                     transition: color 400ms;
                     cursor: pointer;
-
                     i {
                         margin-left: 10px;
                         cursor: pointer;
@@ -315,21 +303,17 @@ export default {
                         height: 100%;
                         vertical-align: middle;
                     }
-
                     &:hover {
                         color: #28a3ef;
                     }
                 }
             }
         }
-
         .details {
             margin-bottom: 5px;
-
             .sui-navbar {
                 overflow: visible;
                 margin-bottom: 0;
-
                 .filter {
                     min-height: 40px;
                     padding-right: 20px;
@@ -338,18 +322,15 @@ export default {
                     padding-left: 0;
                     border-radius: 0;
                     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-
                     .sui-nav {
                         position: relative;
                         left: 0;
                         display: block;
                         float: left;
                         margin: 0 10px 0 0;
-
                         li {
                             float: left;
                             line-height: 18px;
-
                             a {
                                 display: block;
                                 cursor: pointer;
@@ -357,7 +338,6 @@ export default {
                                 color: #777;
                                 text-decoration: none;
                             }
-
                             &.active {
                                 a {
                                     background: #e1251b;
@@ -368,29 +348,23 @@ export default {
                     }
                 }
             }
-
             .goods-list {
                 margin: 20px 0;
-
                 ul {
                     display: flex;
                     flex-wrap: wrap;
-
                     li {
                         height: 100%;
                         width: 20%;
                         margin-top: 10px;
                         line-height: 28px;
-
                         .list-wrap {
                             .p-img {
                                 padding-left: 15px;
                                 width: 215px;
                                 height: 255px;
-
                                 a {
                                     color: #666;
-
                                     img {
                                         max-width: 100%;
                                         height: auto;
@@ -398,21 +372,17 @@ export default {
                                     }
                                 }
                             }
-
                             .price {
                                 padding-left: 15px;
                                 font-size: 18px;
                                 color: #c81623;
-
                                 strong {
                                     font-weight: 700;
-
                                     i {
                                         margin-left: -5px;
                                     }
                                 }
                             }
-
                             .attr {
                                 padding-left: 15px;
                                 width: 85%;
@@ -424,28 +394,23 @@ export default {
                                 display: -webkit-box;
                                 -webkit-box-orient: vertical;
                                 -webkit-line-clamp: 2;
-
                                 a {
                                     color: #333;
                                     text-decoration: none;
                                 }
                             }
-
                             .commit {
                                 padding-left: 15px;
                                 height: 22px;
                                 font-size: 13px;
                                 color: #a7a7a7;
-
                                 span {
                                     font-weight: 700;
                                     color: #646fb0;
                                 }
                             }
-
                             .operate {
                                 padding: 12px 15px;
-
                                 .sui-btn {
                                     display: inline-block;
                                     padding: 2px 14px;
@@ -460,13 +425,11 @@ export default {
                                     background-color: transparent;
                                     margin-right: 15px;
                                 }
-
                                 .btn-bordered {
                                     min-width: 85px;
                                     background-color: transparent;
                                     border: 1px solid #8c8c8c;
                                     color: #8c8c8c;
-
                                     &:hover {
                                         border: 1px solid #666;
                                         color: #fff !important;
@@ -474,11 +437,9 @@ export default {
                                         text-decoration: none;
                                     }
                                 }
-
                                 .btn-danger {
                                     border: 1px solid #e1251b;
                                     color: #e1251b;
-
                                     &:hover {
                                         border: 1px solid #e1251b;
                                         background-color: #e1251b;
@@ -491,27 +452,22 @@ export default {
                     }
                 }
             }
-
             .page {
                 width: 733px;
                 height: 66px;
                 overflow: hidden;
                 float: right;
-
                 .sui-pagination {
                     margin: 18px 0;
-
                     ul {
                         margin-left: 0;
                         margin-bottom: 0;
                         vertical-align: middle;
                         width: 490px;
                         float: left;
-
                         li {
                             line-height: 18px;
                             display: inline-block;
-
                             a {
                                 position: relative;
                                 float: left;
@@ -524,7 +480,6 @@ export default {
                                 padding: 9px 18px;
                                 color: #333;
                             }
-
                             &.active {
                                 a {
                                     background-color: #fff;
@@ -533,20 +488,17 @@ export default {
                                     cursor: default;
                                 }
                             }
-
                             &.prev {
                                 a {
                                     background-color: #fafafa;
                                 }
                             }
-
                             &.disabled {
                                 a {
                                     color: #999;
                                     cursor: default;
                                 }
                             }
-
                             &.dotted {
                                 span {
                                     margin-left: -1px;
@@ -561,7 +513,6 @@ export default {
                                     color: #333;
                                 }
                             }
-
                             &.next {
                                 a {
                                     background-color: #fafafa;
@@ -569,7 +520,6 @@ export default {
                             }
                         }
                     }
-
                     div {
                         color: #333;
                         font-size: 14px;

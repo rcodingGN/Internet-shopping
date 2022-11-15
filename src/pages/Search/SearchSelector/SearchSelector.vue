@@ -4,7 +4,7 @@
             <div class="fl key brand">品牌</div>
             <div class="value logos">
                 <ul class="logo-list">
-                    <li v-for="(trademark,index) in trademarkList" :key="trademark.tmid" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
+                    <li v-for="(trademark,index) in trademarkList" :key="trademark.tmId" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
                 </ul>
             </div>
             <div class="ext">
@@ -141,24 +141,20 @@ export default {
     border: 1px solid #ddd;
     margin-bottom: 5px;
     overflow: hidden;
-
     .logo {
         border-top: 0;
         margin: 0;
         position: relative;
         overflow: hidden;
-
         .key {
             padding-bottom: 87px !important;
         }
     }
-
     .type-wrap {
         margin: 0;
         position: relative;
         border-top: 1px solid #ddd;
         overflow: hidden;
-
         .key {
             width: 100px;
             background: #f1f1f1;
@@ -167,14 +163,12 @@ export default {
             padding: 10px 10px 0 15px;
             float: left;
         }
-
         .value {
             overflow: hidden;
             padding: 10px 0 0 15px;
             color: #333;
             margin-left: 120px;
             padding-right: 90px;
-
             .logo-list {
                 li {
                     float: left;
@@ -191,21 +185,18 @@ export default {
                     color: #e1251b;
                     font-style: italic;
                     font-size: 14px;
-
                     img {
                         max-width: 100%;
                         vertical-align: middle;
                     }
                 }
             }
-
             .type-list {
                 li {
                     float: left;
                     display: block;
                     margin-right: 30px;
                     line-height: 26px;
-
                     a {
                         text-decoration: none;
                         color: #666;
@@ -213,12 +204,10 @@ export default {
                 }
             }
         }
-
         .ext {
             position: absolute;
             top: 10px;
             right: 10px;
-
             .sui-btn {
                 display: inline-block;
                 padding: 2px 14px;
@@ -233,7 +222,6 @@ export default {
                 background: #fff;
                 border: 1px solid #d5d5d5;
             }
-
             a {
                 color: #666;
             }
