@@ -6,7 +6,7 @@ import Login from '@/pages/Login'
 import Detail from '@/pages/Detail'
 
 export default [
-        
+
     {
         path: "/home",
         component: Home,
@@ -29,7 +29,7 @@ export default [
 
     },
     {
-        path: "/detail/:skuid",
+        path: "/detail/:skuid?",
         component: Detail,
         meta: { show: true }
     },

@@ -7,6 +7,7 @@
         <!-- <Footer v-show="$route.path == '/home' || $route.path == '/search'" /> -->
         <!-- 利用路由元信息 meta -->
         <Footer v-show="$route.meta.show" />
+
     </div>
 </template>
 
