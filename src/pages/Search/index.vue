@@ -47,7 +47,10 @@
                             <li class="yui3-u-1-5" v-for="(goods,index) in goodsList" :key="goods.id">
                                 <div class="list-wrap">
                                     <div class="p-img">
-                                        <a href="item.html" target="_blank"><img :src="goods.defaultImg" /></a>
+                                        <!-- 在路由跳转的时候需要带上ID -->
+                                        <router-link :to="`/detail/${goods.id}`">
+                                            <img :src="goods.defaultImg" />
+                                        </router-link>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -70,35 +73,9 @@
 
                         </ul>
                     </div>
-                    <div class="fr page">
-                        <div class="sui-pagination clearfix">
-                            <ul>
-                                <li class="prev disabled">
-                                    <a href="#">«上一页</a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">1</a>
-                                </li>
-                                <li>
-                                    <a href="#">2</a>
-                                </li>
-                                <li>
-                                    <a href="#">3</a>
-                                </li>
-                                <li>
-                                    <a href="#">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">5</a>
-                                </li>
-                                <li class="dotted"><span>...</span></li>
-                                <li class="next">
-                                    <a href="#">下一页»</a>
-                                </li>
-                            </ul>
-                            <div><span>共10页&nbsp;</span></div>
-                        </div>
-                    </div>
+                    <!-- 测试分页器阶段 -->
+                    <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
+                    
                 </div>
             </div>
         </div>
@@ -107,7 +84,7 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector';
-import { mapGetters } from "vuex";
+import { mapGetters , mapState} from "vuex";
 export default {
     name: 'ShopSearch',
     components: {
@@ -180,6 +157,9 @@ export default {
         isDesc() {
             return this.searchParams.order.indexOf('desc') != -1
         },
+        ...mapState({
+            total:state=>state.search.searchList.total
+        })
     },
     methods: {
         // 向服务器发请求获取search模块数据（根据参数不行返回不同的数据进行展示）
@@ -269,6 +249,13 @@ export default {
             // // 将新的order赋予searchParams
             this.searchParams.order = newOrder;
             // // 再次发请求
+            this.getData();
+        },
+        // 这是自定义事件getPageNo的回调函数 --- 获取当前第几页
+        getPageNo(pageNo){
+            // 全局组件Pagination将页码传给search组件，可以打印出页码
+            // console.log(pageNo);
+            this.searchParams.pageNo = pageNo;
             this.getData();
         }
     },

@@ -5,10 +5,13 @@ Vue.config.productionTip = false
 // 三级联动组件 -- 全局组件
 import TypeNav from '@/components/TypeNav';
 // 轮播图 --- 全局组件
-import Carousel from '@/components/Carousel'
+import Carousel from '@/components/Carousel';
+// 分页器 --- 全局组件
+import Pagination from '@/components/Pagination'
 // 第一个参数：全局组件的名称，第二个参数：哪一个组件
 Vue.component(TypeNav.name, TypeNav)
 Vue.component(Carousel.name, Carousel)
+Vue.component(Pagination.name, Pagination)
 // 引入路由
 import router from '@/router';
 // 引入仓库
