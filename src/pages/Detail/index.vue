@@ -75,10 +75,12 @@
                             <div class="controls">
                                 <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
                                 <a href="javascript:" class="plus" @click="skuNum++">+</a>
-                                <a href="javascript:" class="mins" @click="skuNum>1?skuNum-- : skuNum = 1">-</a>
+                                <a href="javascript:" class="mins" @click="skuNum>1? skuNum-- : skuNum = 1">-</a>
                             </div>
                             <div class="add">
-                                <a href="javascript:">加入购物车</a>
+                                <!-- 以前的路由跳转是从A路由跳转到B路由 
+                                    加入购物车，进行路由跳转之前发请求，把购买的产品信息通过请求的形式通知服务器，服务器进行相应的存储 -->
+                                <a @click="addShopcar">加入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -378,6 +380,33 @@ export default {
                 // 出现大于1的小数
                 this.skuNum = parseInt(value);
             }
+        },
+        // 加入购物车的回调函数
+        async addShopcar() {
+            /* 
+                1、发请求 --- 将产品加入到数据库（通知服务器）
+                2、服务器储存成功 --- 进行路由跳转并传递参数
+                3、若失败：给用户提示；
+             */
+            /* 
+                当前这里是派发一个action，像服务器发请求，判断加入购物车是成功还是失败，进行相应的操作
+                下面的代码实际上时调用仓库中的addOrUpdateShopCart
+            */
+            try {
+                await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
+                // 4、路由跳转 同时需要将产品信息交给下一级路由
+                // 下面传参的方式是可以的，但是路由不好看 
+                // 简单的数据可以query传递，复杂的数据需要通过会话存储
+                // sessionStorage.getItem("SKUINFO", JSON.stringify(this.skuInfo))
+                // this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
+
+            } catch (error) {
+                alert(error.message);
+            }
+
+
+
+
         }
     }
 }

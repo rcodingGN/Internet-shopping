@@ -4,6 +4,7 @@ import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Login from '@/pages/Login'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 export default [
 
@@ -23,14 +24,20 @@ export default [
         // 对象写法：额外的给路由组件传递一些props
         // props: { a: 1, b: 2 },
         // 函数写法：可以将params参数、query参数，通过props传递给路由组件
-        props: ($route) => {
-            return { keyword: $route.params.keyword, k: $route.query.k };
-        }
+        // props: ($route) => {
+        //     return { keyword: $route.params.keyword, k: $route.query.k };
+        // }
 
     },
     {
         path: "/detail/:skuid?",
         component: Detail,
+        meta: { show: true }
+    },
+    {
+        path: "/addcartsuccess",
+        name: "addcartsuccess",
+        component: AddCartSuccess,
         meta: { show: true }
     },
     {

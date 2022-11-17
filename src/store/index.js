@@ -7,6 +7,7 @@ import home from './home';
 import search from './search';
 import detail from './Detail'
 
+
 // state:仓库存储数据的地方
 // const state = {
 //     count: 1,
