@@ -37,7 +37,7 @@ export default {
                 //  */
                 // console.log("我在监听floor组件");
                 this.$nextTick(() => {
-                    var mySwiper = new Swiper(this.$refs.cur,
+                    new Swiper(this.$refs.cur,
                         {
                             loop: true,
                             // 如果需要分页器

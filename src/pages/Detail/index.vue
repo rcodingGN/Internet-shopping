@@ -73,9 +73,9 @@
                         </div>
                         <div class="cartWrap">
                             <div class="controls">
-                                <input autocomplete="off" class="itxt">
-                                <a href="javascript:" class="plus">+</a>
-                                <a href="javascript:" class="mins">-</a>
+                                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
+                                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                                <a href="javascript:" class="mins" @click="skuNum>1?skuNum-- : skuNum = 1">-</a>
                             </div>
                             <div class="add">
                                 <a href="javascript:">加入购物车</a>
@@ -338,6 +338,11 @@ export default {
         ImageList,
         Zoom
     },
+    data() {
+        return {
+            skuNum: 1,
+        }
+    },
     mounted() {
         // 派发action获取产品详情的信息
 
@@ -360,6 +365,19 @@ export default {
             // 点击售卖的属性值
             saleAttrValue.isChecked = 1;
 
+        },
+        // 表单元素修改产品个数
+        changeSkuNum(event) {
+            // 正则 this.skuNum = this.skuNum.replace(/\D/g,"")
+            // 用户输入的文本乘1
+            let value = event.target.value * 1;
+            // 如果用户输入进来字符非法,出现NaN或者小于1
+            if (isNaN(value) || value < 1) {
+                this.skuNum = 1;
+            } else {
+                // 出现大于1的小数
+                this.skuNum = parseInt(value);
+            }
         }
     }
 }
