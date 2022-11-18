@@ -26,7 +26,7 @@ export default {
         }
     },
     methods: {
-        handler() {
+        handler(event) {
             let mask = this.$refs.mask;
             let big = this.$refs.big;
             let left = event.offsetX - mask.offsetWidth / 2;

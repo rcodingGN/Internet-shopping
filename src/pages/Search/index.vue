@@ -74,8 +74,8 @@
                         </ul>
                     </div>
                     <!-- 测试分页器阶段 -->
-                    <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
-                    
+                    <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo" />
+
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector';
-import { mapGetters , mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
     name: 'ShopSearch',
     components: {
@@ -158,7 +158,7 @@ export default {
             return this.searchParams.order.indexOf('desc') != -1
         },
         ...mapState({
-            total:state=>state.search.searchList.total
+            total: state => state.search.searchList.total
         })
     },
     methods: {
@@ -252,7 +252,7 @@ export default {
             this.getData();
         },
         // 这是自定义事件getPageNo的回调函数 --- 获取当前第几页
-        getPageNo(pageNo){
+        getPageNo(pageNo) {
             // 全局组件Pagination将页码传给search组件，可以打印出页码
             // console.log(pageNo);
             this.searchParams.pageNo = pageNo;

@@ -1,6 +1,9 @@
 import { reqAddOrUpdateShopCart, reqGoodsInfo } from "@/api";
+import { getUUID } from "@/utils/USER_ID";
 const state = {
     goodsInfo: {},
+    // 游客的临时身份
+    uuid_token: getUUID(),
 }
 const mutations = {
     GETGOODSINFO(state, goodsInfo) {
@@ -17,7 +20,7 @@ const actions = {
         }
     },
     // 将产品添加到购物车中
-    async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
+    async addOrUpdateShopCart({ state, commit, dispatch }, { skuId, skuNum }) {
         // 加入购物车返回的解构
         /* 
             加入购物车以后，前台将参数带给服务器
@@ -25,18 +28,17 @@ const actions = {
             因为服务没有返回其他数据，所以仓库不需要三连环
         */
         let result = await reqAddOrUpdateShopCart(skuId, skuNum);
+        // console.log(result); // 返回的是响应状态
         // 当前的函数如果执行则返回promise，但是我们需要返回成功 | 失败的结果
         if (result.code == 200) {
             // 代表加入购物车成功
             return "OK"
         } else {
-            // 代表加入购物车失败
-            return Promise.reject(new Error('false'));
+            //如果加入购物车失败，返回失败的Promise
+            return Promise.reject();
         }
-
-
-
-    }
+    },
+    // 将产品添加到购物车中 Promise方法实现
 }
 const getters = {
     // 路径导航简化的信息

@@ -347,7 +347,6 @@ export default {
     },
     mounted() {
         // 派发action获取产品详情的信息
-
         this.$store.dispatch('getGoodsInfo', this.$route.params.skuid)
 
     },
@@ -382,32 +381,40 @@ export default {
             }
         },
         // 加入购物车的回调函数
+        // async addShopcar() {
+        //     /* 
+        //         1、发请求 --- 将产品加入到数据库（通知服务器）
+        //         2、服务器储存成功 --- 进行路由跳转并传递参数
+        //         3、若失败：给用户提示；
+        //      */
+        //     /* 
+        //         当前这里是派发一个action，像服务器发请求，判断加入购物车是成功还是失败，进行相应的操作
+        //         下面的代码实际上时调用仓库中的addOrUpdateShopCart
+        //     */
+        //     try {
+        //         await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
+        //         // 4、路由跳转 同时需要将产品信息交给下一级路由
+        //         // 下面传参的方式是可以的，但是路由不好看 
+        //         // 简单的数据可以query传递，复杂的数据需要通过会话存储
+        //         sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
+        //         this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
+
+        //     } catch (error) {
+        //         alert("加入购物车失败");
+        //     }
+        // }
         async addShopcar() {
-            /* 
-                1、发请求 --- 将产品加入到数据库（通知服务器）
-                2、服务器储存成功 --- 进行路由跳转并传递参数
-                3、若失败：给用户提示；
-             */
-            /* 
-                当前这里是派发一个action，像服务器发请求，判断加入购物车是成功还是失败，进行相应的操作
-                下面的代码实际上时调用仓库中的addOrUpdateShopCart
-            */
             try {
                 await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
-                // 4、路由跳转 同时需要将产品信息交给下一级路由
-                // 下面传参的方式是可以的，但是路由不好看 
-                // 简单的数据可以query传递，复杂的数据需要通过会话存储
-                // sessionStorage.getItem("SKUINFO", JSON.stringify(this.skuInfo))
-                // this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
-
+                sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
+                this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
             } catch (error) {
-                alert(error.message);
+                alert("加入购物车失败")
             }
 
-
-
-
         }
+
+        // 加入购物车的回调函数 Promise方法实现
     }
 }
 </script>

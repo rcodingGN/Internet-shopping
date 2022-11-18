@@ -8,48 +8,48 @@
                 <h2 class="all">全部商品分类</h2>
                 <!-- 过渡动画 -->
                 <transition name="sort">
-                <!-- 三级联动 -->
-                <div class="sort" v-show="show">
-                    <!-- 利用事件委派 + 编程式导航 实现路由的跳转与传递参数 -->
-                    <div class="all-sort-list2" @click="goSearch">
-                        <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex == index}">
-                            <h3 @mouseenter="changeIndex(index)">
-                                <!-- 编程式导航 这样比较麻烦见上面的事件委派 -->
-                                <!-- <a @click="goSearch">{{c1.categoryName}}</a> -->
-                                <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-                                <!-- 声明式导航 -->
-                                <!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
-                            </h3>
-                            <!-- 二级、三级分类 -->
-                            <div class="item-list clearfix" :style="{display:currentIndex == index?'block':'none'}">
-                                <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
-                                    <dl class="fore">
-                                        <dt>
-                                            <!-- 编程式导航 这样比较麻烦见上面的事件委派 -->
-                                            <!-- <a @click="goSearch">{{c2.categoryName}}</a> -->
-                                            <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                                            <!-- 声明式导航 -->
-                                            <!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
-                                        </dt>
-                                        <dd>
-                                            <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
-                                                <!-- 编程式导航 这样比较麻烦见上面的事件委派-->
-                                                <!-- <a @click="goSearch">{{c3.categoryName}}</a> -->
-                                                <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                    <!-- 三级联动 -->
+                    <div class="sort" v-show="show">
+                        <!-- 利用事件委派 + 编程式导航 实现路由的跳转与传递参数 -->
+                        <div class="all-sort-list2" @click="goSearch">
+                            <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex == index}">
+                                <h3 @mouseenter="changeIndex(index)">
+                                    <!-- 编程式导航 这样比较麻烦见上面的事件委派 -->
+                                    <!-- <a @click="goSearch">{{c1.categoryName}}</a> -->
+                                    <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                                    <!-- 声明式导航 -->
+                                    <!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
+                                </h3>
+                                <!-- 二级、三级分类 -->
+                                <div class="item-list clearfix" :style="{display:currentIndex == index?'block':'none'}">
+                                    <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
+                                        <dl class="fore">
+                                            <dt>
+                                                <!-- 编程式导航 这样比较麻烦见上面的事件委派 -->
+                                                <!-- <a @click="goSearch">{{c2.categoryName}}</a> -->
+                                                <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
                                                 <!-- 声明式导航 -->
-                                                <!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
-                                            </em>
+                                                <!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
+                                            </dt>
+                                            <dd>
+                                                <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
+                                                    <!-- 编程式导航 这样比较麻烦见上面的事件委派-->
+                                                    <!-- <a @click="goSearch">{{c3.categoryName}}</a> -->
+                                                    <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                                                    <!-- 声明式导航 -->
+                                                    <!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
+                                                </em>
 
-                                        </dd>
-                                    </dl>
+                                            </dd>
+                                        </dl>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
                 </transition>
-                
+
             </div>
             <nav class="nav">
                 <a href="###">服装城</a>
@@ -78,10 +78,10 @@ export default {
         return {
             // 存储用户鼠标移上哪一个一级分类
             currentIndex: -1,
-            show:true,
+            show: true,
         }
     },
-    
+
     // 组件挂载完毕，可以向服务器发请求，发请求通常是在mounted生命周期函数中进行
     mounted() {
         // 通知Vuex发请求，获取数据并存储在仓库中,
@@ -91,10 +91,10 @@ export default {
             当组件挂载完毕，让show属性变为false
             如果是不是home路由组件，则让typenav隐藏
          */
-        if(this.$route.path!='/home'){
+        if (this.$route.path != '/home') {
             this.show = false;
         }
-        
+
 
     },
     computed: {
@@ -129,20 +129,21 @@ export default {
 
         // 节流写法
         // 节流函数不要使用箭头函数
-        changeIndex:throttle(function (index) {
+        changeIndex: throttle(function (index) {
             this.currentIndex = index;
         }, 50),
         /* 鼠标移除 */
         leaveIndex() {
             // 鼠标移出currentIndex为 -1
             this.currentIndex = -1;
-            if(this.$route.path!='/home'){
-            this.show = false;
-        }  },
-        enterShow(){
-            if(this.$route.path!='/home'){
-            this.show = true;
-        }
+            if (this.$route.path != '/home') {
+                this.show = false;
+            }
+        },
+        enterShow() {
+            if (this.$route.path != '/home') {
+                this.show = true;
+            }
         },
         goSearch(event) {
             /**
@@ -177,14 +178,14 @@ export default {
                     query.category3id = category3id;
                 }
                 // 判断：如果路由跳转的时候，带有params参数需要捎带传递过去
-                if(this.$route.params){
+                if (this.$route.params) {
                     location.params = this.$route.params
                     // 整理参数
                     location.query = query;
                     // 路由跳转
                     this.$router.push(location)
                 }
-                
+
             }
 
         },
@@ -321,16 +322,15 @@ export default {
         }
         // 过渡动画的样式
         // 进入的开始状态（进入）
-        .sort-enter{
+        .sort-enter {
             height: 0;
-
         }
         // 过渡动画结束状态（进入）
-        .sort-enter-to{
+        .sort-enter-to {
             height: 515px;
         }
         // 定义动画时间，速率
-        .sort-enter-active{
+        .sort-enter-active {
             transition: all 0.5s linear;
         }
     }
