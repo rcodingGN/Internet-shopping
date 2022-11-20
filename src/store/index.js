@@ -3,10 +3,11 @@ import Vuex from 'vuex';
 
 // 使用插件
 Vue.use(Vuex);
-import home from './Home';
-import search from './Search';
+import home from './home';
+import search from './search';
 import detail from './Detail';
 import shopcart from './Shopcart';
+import user from './User'
 
 
 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
         home,
         search,
         detail,
-        shopcart
+        shopcart,
+        user
     }
 })

@@ -26,6 +26,10 @@ requests.interceptors.request.use((config) => {
         // 添加请求头，字段为userTempId，字段必须与后台商量好
         config.headers.userTempId = store.state.detail.uuid_token;
     }
+    // 需要携带token带给服务器
+    if (store.state.user.token) {
+        config.headers.token = store.state.user.token
+    }
     // 进度条开始动
     nprogress.start();
     // config：为配置对象，对象中有一个Header属性很重要

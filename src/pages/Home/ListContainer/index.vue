@@ -265,7 +265,8 @@ export default {
                     width: 25%;
 
                     .list-item {
-                        background-image: url(./images/icons.png);
+                        // ~@可以路径回退到src下，使用@必须在前面加~
+                        background-image: url(~@/assets/icons.png);
                         width: 61px;
                         height: 40px;
                         display: block;
