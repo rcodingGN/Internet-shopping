@@ -8,7 +8,7 @@ import search from './search';
 import detail from './Detail';
 import shopcart from './Shopcart';
 import user from './User'
-
+import trade from './Trade'
 
 
 // state:仓库存储数据的地方
@@ -42,6 +42,7 @@ export default new Vuex.Store({
         search,
         detail,
         shopcart,
-        user
+        user,
+        trade
     }
 })

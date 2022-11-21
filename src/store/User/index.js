@@ -80,6 +80,9 @@ const actions = {
         // }
         if (result.code == 200) {
             commit('GETUSERINFO', result.data)
+            return "OK"
+        } else {
+            return Promise.reject(new Error('false'));
         }
     },
     // 退出登录

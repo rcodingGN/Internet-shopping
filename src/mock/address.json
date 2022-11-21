@@ -1,0 +1,24 @@
+[
+    {
+        "consignee": "舒克",
+        "fullAddress": "广东省珠海市香洲区格力电器",
+        "phoneNum": "16666666666",
+        "id": 1361,
+        "isDefault": "1",
+        "provinceId": 1,
+        "regionId": 1,
+        "userAddress": "广东省珠海市香洲区格力电器",
+        "userId": 2
+    },
+    {
+        "consignee": "贤哥哥",
+        "fullAddress": "广东省珠海市香洲区格力电器",
+        "phoneNum": "17777777777",
+        "id": 1362,
+        "isDefault": "0",
+        "provinceId": 1,
+        "regionId": 1,
+        "userAddress": "广东省珠海市香洲区格力电器",
+        "userId": 2
+    }
+]

@@ -6,6 +6,7 @@ import Login from '@/pages/Login'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 
 export default [
 
@@ -49,6 +50,12 @@ export default [
     {
         path: "/register",
         component: Register,
+        meta: { show: false }
+    },
+    {
+        path: "/trade",
+        name: "trade",
+        component: Trade,
         meta: { show: false }
     },
     {

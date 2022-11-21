@@ -22,7 +22,7 @@
                 </div>
                 <div class="typeList">
                     <a href="###">我的订单</a>
-                    <a href="###">我的购物车</a>
+                    <router-link to="/ShopCart">我的购物车</router-link>
                     <a href="###">我的尚品汇</a>
                     <a href="###">尚品汇会员</a>
                     <a href="###">企业采购</a>
@@ -119,7 +119,9 @@ export default {
         // 通过全局事件总线清楚搜索关键字
         this.$bus.$on('clear', () => {
             this.keyword = '';
-        })
+        });
+        // 获取用户信息
+        // this.$store.dispatch('getUserInfo');
     },
     computed: {
         // 用户名信息
