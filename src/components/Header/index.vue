@@ -36,7 +36,7 @@
         <div class="bottom">
             <h1 class="logoArea">
                 <router-link class="logo" to="/home">
-                    <img src="./images/logo.png" alt="">
+                    <img src="https://gelimall.oss-cn-shenzhen.aliyuncs.com/album/2020/4/2/86f141a8-3876-4568-86f0-3c343430775c.gif" alt="">
                 </router-link>
             </h1>
             <div class="searchArea">

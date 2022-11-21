@@ -1,4 +1,4 @@
-import { reqGetCode, reqUserReigster, reqUserLogin, reqUserInfo, reqLogout } from "@/api";
+import { reqGetCode, reqUserReigster, reqUserLogin, reqUserInfo, reqLogout, reqSubmitOrder } from "@/api";
 // import {getToken, removeToken, setToken} from '@/utils/token'
 const state = {
     code: '',
@@ -97,7 +97,8 @@ const actions = {
             return Promise.reject(new Error('false'))
         }
 
-    }
+    },
+
 
 };
 const getters = {

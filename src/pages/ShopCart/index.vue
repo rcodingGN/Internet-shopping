@@ -162,6 +162,7 @@ export default {
                 alert(error.message)
             }
         },
+        // 删除所有选中的产品
         async deleteAllCheckedCart() {
             try {
                 // 派发action

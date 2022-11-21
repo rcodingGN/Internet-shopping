@@ -21,12 +21,14 @@ import '@/mock/mockServer';
 // 引入swiper样式
 import 'swiper/css/swiper.css';
 Vue.config.productionTip = false
-
+// 统一接口api文件夹里面全部请求函数  统一引入
+import * as API from '@/api'
 new Vue({
 
     render: h => h(App),
     beforeCreate() {
         Vue.prototype.$bus = this;
+        Vue.prototype.$API = API;
     },
     // 注册仓库：组件实例身上会多出一个属性 $store
     store,

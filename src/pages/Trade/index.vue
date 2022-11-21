@@ -30,40 +30,25 @@
             </div>
             <div class="detail">
                 <h5>商品清单</h5>
-                <ul class="list clearFix">
+                <ul class="list clearFix" v-for="(order,index) in orderInfo.detailArrayList" :key="order.skuId">
                     <li>
-                        <img src="./images/goods.png" alt="">
+                        <img :src="order.imgUrl" alt="" style="width: 100px;height: 100px;">
                     </li>
                     <li>
                         <p>
-                            Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+                            {{order.skuName}}</p>
                         <h4>7天无理由退货</h4>
                     </li>
                     <li>
-                        <h3>￥5399.00</h3>
+                        <h3>￥{{order.orderPrice}}.00</h3>
                     </li>
-                    <li>X1</li>
-                    <li>有货</li>
-                </ul>
-                <ul class="list clearFix">
-                    <li>
-                        <img src="./images/goods.png" alt="">
-                    </li>
-                    <li>
-                        <p>
-                            Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-                        <h4>7天无理由退货</h4>
-                    </li>
-                    <li>
-                        <h3>￥5399.00</h3>
-                    </li>
-                    <li>X1</li>
+                    <li>X{{order.skuNum}}</li>
                     <li>有货</li>
                 </ul>
             </div>
             <div class="bbs">
                 <h5>买家留言：</h5>
-                <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
+                <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="msg"></textarea>
 
             </div>
             <div class="line"></div>
@@ -76,8 +61,8 @@
         <div class="money clearFix">
             <ul>
                 <li>
-                    <b><i>1</i>件商品，总商品金额</b>
-                    <span>¥5399.00</span>
+                    <b><i>{{orderInfo.totalNum}}</i>件商品，总商品金额</b>
+                    <span>¥{{orderInfo.totalAmount}}.00</span>
                 </li>
                 <li>
                     <b>返现：</b>
@@ -99,7 +84,7 @@
             </div>
         </div>
         <div class="sub clearFix">
-            <router-link class="subBtn" to="/pay">提交订单</router-link>
+            <a class="subBtn" @click="submitOrder">提交订单</a>
         </div>
     </div>
 </template>
@@ -108,6 +93,13 @@
 import { mapState } from "vuex";
 export default {
     name: 'Trade',
+    data() {
+        return {
+            // 收集买家的留言信息
+            msg: '',
+            orderId: '',
+        }
+    },
     mounted() {
         // 派发地址
         this.$store.dispatch('getAddress');
@@ -116,14 +108,14 @@ export default {
     },
     computed: {
         ...mapState({
-            addressInfo: state => state.trade.address
+            addressInfo: state => state.trade.address,
+            orderInfo: state => state.trade.orderInfo,
         }),
         // 将来提交订单默认选择的地址
         userDefaultAddress() {
             // find：数组当中符合条件的元素返回，作为最终结果
-            return this.addressInfo.find(item => item.isDefault == 1) || {};
+            return this.addressInfo.find(item => item.isDefault == 1 || {});
         }
-
     },
     methods: {
         // 修改默认地址
@@ -133,7 +125,41 @@ export default {
                 item.isDefault = 0
             });
             address.isDefault = 1;
-        }
+        },
+        //提交订单  没有在store中保存
+        async submitOrder() {
+            //整理参数:交易编码
+            let { tradeNo } = this.orderInfo;
+            let data = {
+                consignee: this.userDefaultAddress.consignee, //付款人的名字
+                consigneeTel: this.userDefaultAddress.phoneNum, //付款人的手机号
+                deliveryAddress: this.userDefaultAddress.fullAddress, //付款人收货地址
+                paymentWay: "ONLINE", //支付方式都是在线支付
+                orderComment: this.msg, //买家留言
+                orderDetailList: this.orderInfo.detailArrayList, //购物车商品信息
+            };
+
+            //发请求:提交订单   不走vuex
+            let result = await this.$API.reqSubmitOrder(tradeNo, data);
+            // 提交订单成功
+            if (result.code == 200) {
+                this.orderId = result.data;
+                // 路由跳转：传递参数
+                // this.$router.push(`/pay/${this.orderId}`);
+                this.$router.push({ path: '/pay', query: { orderId: this.orderId } });
+            } else {
+                alert(result.code)
+            }
+            // 走vuex
+            // try {
+            //     await this.$store.dispatch("submitOrder", { tradeNo, data });
+            //     //将来提交订单成功【订单ID生成】，路由跳转pay页面，进行支付
+            //     this.$router.push({ path: '/pay', query: { orderId: this.orderId } });
+
+            // } catch (error) {
+            //     alert(error.message);
+            // }
+        },
     },
 }
 </script>

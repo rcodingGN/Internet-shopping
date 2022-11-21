@@ -85,7 +85,8 @@ export const reqLogout = () => requests({ url: '/user/passport/logout', method: 
 
 // 获取用户地址信息
 // url:/user/userAddress/auth/findUserAddressList method:get
-export const reqAddressInfo = () => mockRequests({ url: '/address', method: 'get' })
+// export const reqAddressInfo = () => mockRequests({ url: '/address', method: 'get' })
+export const reqAddressInfo = () => requests({ url: '/user/userAddress/auth/findUserAddressList', method: 'get' })
 
 // 获取交易页商品数据
 // url:/order/auth/trade method:get
