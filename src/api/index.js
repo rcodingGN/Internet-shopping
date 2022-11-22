@@ -94,12 +94,13 @@ export const reqOrderInfo = () => requests({ url: '/order/auth/trade', method: '
 
 //提交订单接口
 export const reqSubmitOrder = (tradeNo, data) => requests({ url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, method: 'post', data });
+// export const reqSubmitOrder = (tradeNo, data) => requests({ url: `/shopTrade?tradeNo=${tradeNo}`, method: 'post', data });
 
 //获取支付信息接口
 export const reqPayInfo = (orderId) => requests({ url: `/payment/weixin/createNative/${orderId}`, method: 'get' });
 
 //查询支付结果
-export const reqPayResult = (orderId) => requests({ url: `/payment/weixin/queryPayStatus/${orderId}`, method: 'get' });
+export const reqPayStatus = (orderId) => requests({ url: `/payment/weixin/queryPayStatus/${orderId}`, method: 'get' });
 
 
 //获取我的订单

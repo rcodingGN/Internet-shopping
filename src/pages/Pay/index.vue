@@ -1,5 +1,7 @@
 <template>
     <div class="pay-main">
+        <!-- <el-button type="primary" icon="el-icon-check">测试</el-button> -->
+
         <div class="pay-container">
             <div class="checkout-tit">
                 <h4 class="tit-txt">
@@ -8,7 +10,7 @@
                 </h4>
                 <div class="paymark">
                     <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>{{getorderId}}</em></span>
-                    <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥17,654</em></span>
+                    <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥{{payInfo.totalAmount}}</em></span>
                 </div>
             </div>
             <div class="checkout-info">
@@ -65,7 +67,8 @@
                 <div class="hr"></div>
 
                 <div class="submit">
-                    <router-link class="btn" to="/paysuccess">立即支付</router-link>
+                    <!-- <router-link class="btn" to="/paysuccess" @click="open">立即支付</router-link> -->
+                    <a class="btn" @click="open">立即支付</a>
                 </div>
                 <div class="otherpay">
                     <div class="step-tit">
@@ -82,16 +85,19 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
     name: 'Pay',
     data() {
         return {
             payInfo: {},
+            timer: null,
+            tradeCode: '',
         }
     },
     computed: {
         getorderId() {
-            return this.$route.qurey.orderId;
+            return this.$route.query.orderId;
         }
     },
     // 不允许在生命周期函数中添加async|await
@@ -100,14 +106,70 @@ export default {
     },
     methods: {
         async getPayInfo() {
-
-            let result = await this.$API.reqPayInfo();
+            let result = await this.$API.reqPayInfo(this.orderId);
             console.log(result);
             // 如果成功：组件当中存储支付信息
             if (result.code == 200) {
                 this.payInfo = result.data;
             }
-        }
+        },
+        async open() {
+            // 生成二维码的url
+            this.payInfo.codeUrl = "www.baidu.com"
+            let url = await QRCode.toDataURL(this.payInfo.codeUrl)
+            console.log(url);
+            this.$alert(`<img src=${url}/>`, "微信支付", {
+                dangerouslyUseHTMLString: true,
+                // 中间布局
+                center: true,
+                // 是否显示取消按钮
+                showCancelButton: true,
+                // 取消按钮文本
+                cancelButtonText: "支付遇见问题",
+                // 确定按钮文本
+                confirmButtonText: "我已支付",
+                // 关闭右上角的X
+                showClose: false,
+                // 关闭弹出窗的配置值
+                beforeClose: (type, instance, done) => {
+                    // type:区分取消|确定按钮
+                    // instance：当前组件实例
+                    // done：关闭弹出框的方法
+                    if (type == "cancel") {
+                        alert("请联系管理员恺哥");
+                        // 清除定时器
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        // 关闭弹出框
+                        done();
+                    } else {
+                        // 判断是否真的支付成功
+                        if (this.code == 201) {
+                            clearInterval(this.timer);
+                            this.timer = null;
+                            done();
+                        }
+                    }
+                }
+            });
+            // 需要知道支付成功与失败， 支付成功：路由跳转，支付失败：提示信息
+            if (!this.timer) {
+                this.timer = setInterval(async () => {
+                    // 发请求获取用户支付状况
+                    let result = await this.$API.reqPayStatus(this.orderId);
+                    if (result.code == 201) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        // 保存成功支付返回的code
+                        this.code = result.code;
+                        // 关闭弹出框
+                        this.$msgbox.close();
+                        // 跳转到下一路由
+                        this.$router.push('/paysuccess')
+                    }
+                }, 10000);
+            }
+        },
     },
 }
 </script>

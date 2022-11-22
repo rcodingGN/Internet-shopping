@@ -75,7 +75,7 @@
             </ul>
         </div>
         <div class="trade">
-            <div class="price">应付金额:　<span>¥5399.00</span></div>
+            <div class="price">应付金额:　<span>¥{{orderInfo.totalAmount}}.00</span></div>
             <div class="receiveInfo">
                 寄送至:
                 <span>{{userDefaultAddress.fullAddress}}</span>
@@ -113,8 +113,8 @@ export default {
         }),
         // 将来提交订单默认选择的地址
         userDefaultAddress() {
-            // find：数组当中符合条件的元素返回，作为最终结果
-            return this.addressInfo.find(item => item.isDefault == 1 || {});
+            // find：数组当中符合条件的元素返回，作为最终结果   这里find会报错
+            return this.addressInfo.find(item => item.isDefault == 1) || {};
         }
     },
     methods: {
@@ -129,7 +129,7 @@ export default {
         //提交订单  没有在store中保存
         async submitOrder() {
             //整理参数:交易编码
-            let { tradeNo } = this.orderInfo;
+            let tradeNo = this.orderInfo.tradeNo;
             let data = {
                 consignee: this.userDefaultAddress.consignee, //付款人的名字
                 consigneeTel: this.userDefaultAddress.phoneNum, //付款人的手机号
@@ -141,11 +141,13 @@ export default {
 
             //发请求:提交订单   不走vuex
             let result = await this.$API.reqSubmitOrder(tradeNo, data);
+            // console.log(result);
             // 提交订单成功
             if (result.code == 200) {
+
                 this.orderId = result.data;
                 // 路由跳转：传递参数
-                // this.$router.push(`/pay/${this.orderId}`);
+                // this.$router.push(`/pay/?orderId` + this.orderId);
                 this.$router.push({ path: '/pay', query: { orderId: this.orderId } });
             } else {
                 alert(result.code)

@@ -1,0 +1,22 @@
+[
+    {
+        "activityRule": null,
+        "couponInfoList": null,
+        "createTime": null,
+        "hasStock": null,
+        "id": null,
+        "imgUrl": "http://47.93.148.192:8080/group1/M00/00/02/rBHu8l-sklaAbYPbAAHJf20K7J4980.jpg",
+        "orderId": null,
+        "orderPrice": 4488,
+        "refundStatus": "",
+        "refundStatusString": "",
+        "skuId": 15,
+        "skuName": "华为 HUAWEI P40 麒麟990 5G SoC芯片 8GB+128GB冰霜银全网通5G手机",
+        "skuNum": 2,
+        "sourceId": 15,
+        "sourceType": "QUERY",
+        "splitActivityAmount": null,
+        "splitCouponAmount": null,
+        "splitTotalAmount": null
+    }
+]

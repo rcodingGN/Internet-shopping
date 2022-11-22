@@ -1,4 +1,4 @@
-// 配置路由信息
+// 引入一级路由组件
 import Home from '@/pages/Home'
 import Search from '@/pages/Search'
 import Register from '@/pages/Register'
@@ -9,7 +9,11 @@ import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
 
+// 引入二级路由组件
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 export default [
 
     {
@@ -68,7 +72,35 @@ export default [
     {
         path: "/paysuccess",
         component: PaySuccess,
-        meta: { show: false }
+        meta: { show: false },
+        // 路由独享守卫
+        beforeEnter: (to, from, next) => {
+            if (from.path == "/shopcart") {
+                next();
+            } else {
+                next(false);
+            }
+        }
+    },
+    {
+        path: "/center",
+        component: Center,
+        meta: { show: false },
+        children: [
+            {
+                path: 'myorder',
+                component: MyOrder,
+
+            },
+            {
+                path: 'grouporder',
+                component: GroupOrder,
+            },
+            {
+                path: '/center',
+                redirect: '/center/myorder'
+            },
+        ]
     },
     {
         path: "/login",

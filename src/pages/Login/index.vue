@@ -82,7 +82,10 @@ export default {
             try {
                 const { phone, password } = this;
                 (phone && password) && (await this.$store.dispatch('userLogin', { phone, password }));
-                this.$router.push('/home');
+                // 登录的路由组件：看路由当中是否包含有query参数，若有：跳到query参数指定路由，若无：跳到home
+                // console.log(this.$route.query.redirect);
+                let toPath = this.$route.query.redirect || '/home';
+                this.$router.push(toPath);
             } catch (error) {
                 alert(error.message)
             }

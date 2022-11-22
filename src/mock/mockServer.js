@@ -5,8 +5,10 @@ import Mock from 'mockjs';
 import banner from './banner.json';
 import floor from './floor.json';
 import address from './address.json';
+import shopTrade from './trade.json'
 
 // mock数据：第一个参数请求地址  第二个参数：请求数据
 Mock.mock("/mock/banner", { code: 200, data: banner }); // 模拟首页轮播图
 Mock.mock("/mock/floor", { code: 200, data: floor }); // 模拟楼层轮播图
 Mock.mock("/mock/address", { code: 200, data: address }); // 模拟地址
+Mock.mock("/mock/shopTrade", { code: 200, data: shopTrade }); // 模拟商品交易数据

@@ -100,7 +100,7 @@ router.beforeEach(async (to, from, next) => {
         //用户未登录:不能进入/trade、/pay、/paysuccess、/center、/center/myorder  /center/teamorder
         let toPath = to.path;
         if (toPath.indexOf('trade') != -1 || toPath.indexOf('pay') != -1 || toPath.indexOf('center') != -1) {
-            next('/login?redirect=' + toPath);
+            next('/login?redirect=' + toPath);  // 把未登录时候想去丹没有去成的信息，存储于地址栏中【路由】
         } else {
             next();
         }

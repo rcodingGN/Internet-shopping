@@ -5,7 +5,7 @@
         <div class="top">
             <div class="container">
                 <div class="loginList">
-                    <p>尚品汇欢迎您！</p>
+                    <p>格力董明珠店欢迎您！</p>
                     <!-- 未登录 -->
                     <p v-if="!userName">
                         <span>请</span>
@@ -21,12 +21,12 @@
                     </p>
                 </div>
                 <div class="typeList">
-                    <a href="###">我的订单</a>
+                    <router-link to="/center/myorder">我的订单</router-link>
                     <router-link to="/ShopCart">我的购物车</router-link>
-                    <a href="###">我的尚品汇</a>
-                    <a href="###">尚品汇会员</a>
+                    <a href="###">我的格力</a>
+                    <a href="###">格力会员</a>
                     <a href="###">企业采购</a>
-                    <a href="###">关注尚品汇</a>
+                    <a href="###">关注格力</a>
                     <a href="###">合作招商</a>
                     <a href="###">商家后台</a>
                 </div>
