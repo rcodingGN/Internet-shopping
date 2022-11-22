@@ -49,7 +49,7 @@
                                     <div class="p-img">
                                         <!-- 在路由跳转的时候需要带上ID -->
                                         <router-link :to="`/detail/${goods.id}`">
-                                            <img :src="goods.defaultImg" />
+                                            <img v-lazy="goods.defaultImg" />
                                         </router-link>
                                     </div>
                                     <div class="price">

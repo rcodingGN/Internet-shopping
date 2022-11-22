@@ -1,6 +1,6 @@
 // 引入一级路由组件
-import Home from '@/pages/Home'
-import Search from '@/pages/Search'
+// import Home from '@/pages/Home'
+// import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Login from '@/pages/Login'
 import Detail from '@/pages/Detail'
@@ -14,16 +14,28 @@ import Center from '@/pages/Center'
 // 引入二级路由组件
 import MyOrder from '@/pages/Center/myOrder'
 import GroupOrder from '@/pages/Center/groupOrder'
+
+/* 
+    当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。
+    如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就会更加高效。
+*/
+// 路由懒加载写法一
+const foo = () => {
+    return import('@/pages/Home');
+};
+
+
 export default [
 
     {
         path: "/home",
-        component: Home,
+        component: foo,
         meta: { show: true }
     },
     {
         path: "/search/:keyword?",
-        component: Search,
+        // 路由懒加载写法二
+        component: () => import('@/pages/Search'),
         meta: { show: true },
         name: "search",
         // 路由组件能不能传递props数据?
@@ -67,7 +79,14 @@ export default [
     {
         path: "/pay",
         component: Pay,
-        meta: { show: false }
+        meta: { show: false },
+        beforeEnter: (to, from, next) => {
+            if (from.path == "/trade") {
+                next();
+            } else {
+                next(false)
+            }
+        }
     },
     {
         path: "/paysuccess",
@@ -75,6 +94,7 @@ export default [
         meta: { show: false },
         // 路由独享守卫
         beforeEnter: (to, from, next) => {
+            // if (from.path == ("/shopcart" || "/trade")) {
             if (from.path == "/shopcart") {
                 next();
             } else {

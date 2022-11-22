@@ -144,11 +144,11 @@ export default {
                         done();
                     } else {
                         // 判断是否真的支付成功
-                        if (this.code == 201) {
-                            clearInterval(this.timer);
-                            this.timer = null;
-                            done();
-                        }
+                        // if (this.code == 201) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        done();
+                        // }
                     }
                 }
             });

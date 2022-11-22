@@ -26,11 +26,26 @@ import store from '@/store';
 import '@/mock/mockServer';
 // 引入swiper样式
 import 'swiper/css/swiper.css';
-
 Vue.config.productionTip = false
-
 // 统一接口api文件夹里面全部请求函数  统一引入
 import * as API from '@/api/index.js'
+// 引入vue-lazyload插件
+import VueLazyload from 'vue-lazyload';
+import atm from '@/assets/1.gif'
+// 注册插件
+Vue.use(VueLazyload, {
+    // 懒加载默认的图片
+    loading: atm
+});
+
+
+
+// 引入自定义插件
+// import myPlugins from '@/plugins/myPlugins';
+// Vue.use(myPlugins, {
+//     name: "upper",
+// })
+
 new Vue({
 
     render: h => h(App),

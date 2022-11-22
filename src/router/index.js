@@ -44,6 +44,7 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 
 // 配置路由
 let router = new VueRouter({
+    mode: 'hash',
     // 配置路由
     routes,
     // 滚动行为
