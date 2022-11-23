@@ -5,11 +5,11 @@ import mockRequests from './mockAjax'
 // 三级联动接口
 // /api/product/getBaseCategoryList get请求 无参数
 // axios发请求返回的结果是promise对象
-export const reqCategoryList = () => {
-    // 发请求
-    return requests({ url: '/product/getBaseCategoryList', method: 'get' }) // 因为在request.js中已经注明了 baseURL:'/api',所以这里不需要再次输入api
-}
-// export const reqCategoryList = () => requests.get('/product/getBaseCategoryList');
+// export const reqCategoryList = () => {
+//     // 发请求
+//     return requests({ url: '/product/getBaseCategoryList', method: 'get' }) // 因为在request.js中已经注明了 baseURL:'/api',所以这里不需要再次输入api
+// }
+export const reqCategoryList = () => requests.get('/product/getBaseCategoryList');
 
 // 获取banner（home首页轮播图）
 export const reqGetbannerList = () => {

@@ -7,7 +7,7 @@
         <Rank />
         <Like />
         <!-- Floor组件在内部是没有发送请求的，数据是父组件给的 mounted下的this.$store.dispacth 与 computed下的...mapstate -->
-        <Floor v-for="(floor,index) in floorList" :key="floor.id" :list="floor" />
+        <Floor v-for="(floor,index) in floorList" :key="floor.id" :floor="floor" />
         <!-- <Floor /> -->
         <Brand />
 

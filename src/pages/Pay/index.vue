@@ -167,7 +167,7 @@ export default {
                         // 跳转到下一路由
                         this.$router.push('/paysuccess')
                     }
-                }, 10000);
+                }, 1000);
             }
         },
     },
