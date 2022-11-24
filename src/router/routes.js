@@ -77,6 +77,17 @@ export default [
         meta: { show: false }
     },
     {
+        path: "/login",
+        component: Login,
+        meta: { show: false }
+    },
+
+    // 重定向，在项目跑起来的时候，访问，立马让他定向到首页
+    {
+        path: "*",
+        redirect: "/home"
+    },
+    {
         path: "/pay",
         component: Pay,
         meta: { show: false },
@@ -123,15 +134,52 @@ export default [
         ]
     },
     {
-        path: "/login",
-        component: Login,
-        meta: { show: false }
+        path: '/communication',
+        component: () => import('@/pages/Communication/Communication'),
+        children: [
+            {
+                path: 'event',
+                component: () => import('@/pages/Communication/EventTest/EventTest'),
+                meta: {
+                    show: false
+                },
+            },
+            {
+                path: 'model',
+                component: () => import('@/pages/Communication/ModelTest/ModelTest'),
+                meta: {
+                    show: false
+                },
+            },
+            {
+                path: 'sync',
+                component: () => import('@/pages/Communication/SyncTest/SyncTest'),
+                meta: {
+                    show: false
+                },
+            },
+            {
+                path: 'attrs-listeners',
+                component: () => import('@/pages/Communication/AttrsListenersTest/AttrsListenersTest'),
+                meta: {
+                    show: false
+                },
+            },
+            {
+                path: 'children-parent',
+                component: () => import('@/pages/Communication/ChildrenParentTest/ChildrenParentTest'),
+                meta: {
+                    show: false
+                },
+            },
+            {
+                path: 'scope-slot',
+                component: () => import('@/pages/Communication/ScopeSlotTest/ScopeSlotTest'),
+                meta: {
+                    show: false
+                },
+            }
+        ],
     },
-
-    // 重定向，在项目跑起来的时候，访问，立马让他定向到首页
-    {
-        path: "*",
-        redirect: "/home"
-    }
 
 ]
