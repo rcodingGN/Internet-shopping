@@ -49,7 +49,7 @@ const actions = {
     // 解构用户名与密码
     const { username, password } = userInfo
     let result = await login({ username: username.trim(), password: password })
-    console.log(result);
+    // console.log(result);
     // 目前登录使用的是mock数据，mock数据的code是20000
     if (result.code == 20000) {
       commit('SET_TOKEN', result.data.token);

@@ -35,13 +35,13 @@
           <img :src="row.logoUrl" alt="" style="width: 100px; height: 100px" />
         </template>
       </el-table-column>
-      <el-table-column prop="prop" label="操作" width="width">
+      <el-table-column prop="row" label="操作" width="width">
         <template slot-scope="{ row, $index }">
           <el-button
             type="warning"
             icon="el-icon-edit"
             size="mini"
-            @click="updateTradeMark"
+            @click="updateTradeMark(row)"
             >修改</el-button
           >
           <el-button type="danger" icon="el-icon-delete" size="mini"
@@ -63,14 +63,14 @@
         pager-count：页码按钮的数量，当总页数超过该值时会折叠
     -->
     <el-pagination
-      style="magin-top: 20px; textalign: center"
+      style="magin-top: 20px; textAlign: center"
       :current-page="page"
       :total="total"
       :page-sizes="[3, 5, 10]"
       :page-size="limit"
       :pager-count="9"
       layout=" prev, pager, next, jumper,->,sizes,total"
-      @current-change="getPageList(pager)"
+      @current-change="getPageList"
       @size-change="handleSizeChange"
     >
     </el-pagination>
@@ -79,7 +79,7 @@
         :visible.sync:控制对话框显示与隐藏
 
         -->
-    <el-dialog title="添加品牌" :visible.sync="dialogFormVisible">
+    <el-dialog :title="tmForm.id?'修改品牌':'添加品牌'" :visible.sync="dialogFormVisible">
       <!-- 
         form表单元素
         model属性：把表单的数据收到对象身上，将来也需要用于表单验证
@@ -112,8 +112,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
+        <el-button type="primary" @click="addOrUpdateTradeMark">确 定</el-button
         >
       </div>
     </el-dialog>
@@ -150,13 +149,13 @@ export default {
     this.getPageList();
   },
   methods: {
-    async getPageList(pager = 1) {
+    async getPageList(pager=1) {
       this.page = pager;
       // 解构参数
       const { page, limit } = this;
       // 获取品牌列表接口
       let result = await this.$API.trademark.reqTradeMarkList(page, limit);
-      // console.log(result);
+    //   console.log(result);      // console.log(result);
       if (result.code == 200) {
         // 分别是数据总数与列表数组
         this.total = result.data.total;
@@ -184,8 +183,14 @@ export default {
     this.tmForm = {tmName:'',logoUrl:''}
     },
     // 修改某个品牌
-    updateTradeMark() {
+    updateTradeMark(row) {
+        // row:当前用户选中的品牌信息
       this.dialogFormVisible = true;
+    //   将已有的品牌信息赋值给tmForm
+    // 将服务器返回的品牌信息直接赋值给tmForm进行展示，tmform存储的就是服务器返回的信息
+    // console.log(row);
+      this.tmForm = {...row};
+
     },
     // 上传图片相关的回调
     // 图片上传成功
@@ -196,6 +201,7 @@ export default {
         // console.log(file);
         this.tmForm.logoUrl = res.data;
       },
+    //   图片上传之前
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -207,7 +213,24 @@ export default {
           this.$message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
-      }
+      },
+    //   添加按钮（添加品牌|修改品牌）
+      async addOrUpdateTradeMark(){
+        this.dialogFormVisible = false;
+        // 发请求（添加品牌|修改品牌）
+        let result = await this.$API.trademark.reqAddUpdateTradeMark(this.tmForm);
+        // console.log(result);
+        if (result.code == 200) {
+            // 弹出信息：添加品牌成功、修改品牌成功
+            this.$message({
+                type:'success',
+                message:this.tmForm.id?'修改品牌成功':'添加品牌成功'
+                })
+            // 添加或修改品牌成功后，需要再次获取品牌列表进行展示
+            // 如果是添加品牌，应该停留在第一页，修改品牌应该停留在当前页
+            this.getPageList(this.tmForm.id?this.page:1);
+        }
+      },
   },
 };
 </script>
