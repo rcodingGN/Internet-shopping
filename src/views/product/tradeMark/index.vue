@@ -44,7 +44,7 @@
             @click="updateTradeMark(row)"
             >修改</el-button
           >
-          <el-button type="danger" icon="el-icon-delete" size="mini"
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTradeMark(row)"
             >删除</el-button
           >
         </template>
@@ -77,18 +77,19 @@
     <!-- 
         对话框 
         :visible.sync:控制对话框显示与隐藏
-
+        
+        Form 组件提供了表单验证的功能，只需要通过 rules 属性传入约定的验证规则，并将 Form-Item 的 prop 属性设置为需校验的字段名即可
         -->
     <el-dialog :title="tmForm.id?'修改品牌':'添加品牌'" :visible.sync="dialogFormVisible">
       <!-- 
         form表单元素
         model属性：把表单的数据收到对象身上，将来也需要用于表单验证
        -->
-      <el-form style="width: 80%" :model="tmForm">
-        <el-form-item label="品牌名称" label-width="100px" >
+      <el-form style="width: 80%" :model="tmForm" :rules="rules" ref="ruleForm">
+        <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input autocomplete="off" v-model="tmForm.tmName"></el-input>
         </el-form-item>
-        <el-form-item label="品牌名称" label-width="100px">
+        <el-form-item label="品牌名称" label-width="100px" prop="logoUrl">
             <!-- 
                 图片上传
                 :on-success="handleAvatarSuccess"  可以检测到图片上传成功，成功后会执行一次
@@ -123,6 +124,14 @@
 export default {
   name: "tradeMark",
   data() {
+    var validateTmName = (rule, value, callback) => {
+        // 自定义检验规则
+        if (value.lenght<2|value.lenght>11) {
+            callback(new Error('品牌的名称需要2-10'))
+        }else{
+            callback()
+        }
+      };
     return {
       // 当前分页器第几页
       page: 1,
@@ -140,6 +149,23 @@ export default {
         tmForm:{
             tmName:'',
             logoUrl:''
+        },
+        // 表单验证
+         rules: {
+            // 品牌名称的验证规则
+          tmName: [
+            // trigger 用户行为（blur、change）  required 必填项  message 提示信息
+            { required: true, message: '请输入品牌名称', trigger: 'blur' },
+            // min，max文本长度上下限
+            // { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+            // 自定义检验规则
+            { validator: validateTmName, trigger: 'change' }
+          ],
+        //   品牌logo验证规则
+          logoUrl: [
+            { required: true, message: '请选择品牌图片' }
+          ],
+         
         }
 
     };
@@ -215,12 +241,16 @@ export default {
         return isJPG && isLt2M;
       },
     //   添加按钮（添加品牌|修改品牌）
-      async addOrUpdateTradeMark(){
-        this.dialogFormVisible = false;
-        // 发请求（添加品牌|修改品牌）
-        let result = await this.$API.trademark.reqAddUpdateTradeMark(this.tmForm);
-        // console.log(result);
-        if (result.code == 200) {
+      addOrUpdateTradeMark(){
+        // 当全部验证字段通过，才能书写业务逻辑
+        this.$refs.ruleForm.validate( async (success) => {
+        
+          if (success) {
+           this.dialogFormVisible = false;
+          // 发请求（添加品牌|修改品牌）
+          let result = await this.$API.trademark.reqAddUpdateTradeMark(this.tmForm);
+          // console.log(result);
+          if (result.code == 200) {
             // 弹出信息：添加品牌成功、修改品牌成功
             this.$message({
                 type:'success',
@@ -230,7 +260,43 @@ export default {
             // 如果是添加品牌，应该停留在第一页，修改品牌应该停留在当前页
             this.getPageList(this.tmForm.id?this.page:1);
         }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+
+        
       },
+    //   删除品牌信息
+    deleteTradeMark(row){
+        // 弹框
+        this.$confirm(`你确定删除${row.tmName}?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            // 当用户点击确定按钮的时候触发
+             let result = await this.$API.trademark.reqDeleteTradeMark(row.id);
+       if (result.code == 200) {
+        // 如果删除成功
+       this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        //   再次获取列表
+        this.getPageList(this.list.length>1?this.page:this.page-1);
+       }
+          
+        }).catch(() => {
+            // 当用户点击确定按钮的时候触发
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    }
   },
 };
 </script>

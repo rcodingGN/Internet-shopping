@@ -2,7 +2,7 @@
 import request from '@/utils/request'
 // 获取品牌列表接口
 // URL：/admin/product/baseTrademark/{page}/{limit}
-export const reqTradeMarkList = (page,limit)=>request({url:`/admin/product/baseTrademark/${page}/${limit}`,method:"get"});
+export const reqTradeMarkList = (page, limit) => request({ url: `/admin/product/baseTrademark/${page}/${limit}`, method: "get" });
 
 // 处理添加品牌的操作
 //  新增品牌 /admin/product/baseTrademark/save post  携带两个参数：tmname ，logo
@@ -13,8 +13,11 @@ export const reqTradeMarkList = (page,limit)=>request({url:`/admin/product/baseT
 export const reqAddUpdateTradeMark = (tradeMark) => {
     // 带给服务器数据携带ID -- 修改
     if (tradeMark.id) {
-        return request({url:`/admin/product/baseTrademark/update`,method:"put",data:tradeMark})
-    }else{
-        return request({url:`/admin/product/baseTrademark/save`,method:"post",data:tradeMark})
+        return request({ url: `/admin/product/baseTrademark/update`, method: "put", data: tradeMark })
+    } else {
+        return request({ url: `/admin/product/baseTrademark/save`, method: "post", data: tradeMark })
     }
-}
+};
+// 删除品牌
+// url：/admin/acl/permission/remove/{id}  mthod：delete  参数 id
+export const reqDeleteTradeMark = (id) => request({url:`/admin/acl/permission/remove/${id}`, method:"delete"})
