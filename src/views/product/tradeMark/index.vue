@@ -276,9 +276,9 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-            // 当用户点击确定按钮的时候触发
-             let result = await this.$API.trademark.reqDeleteTradeMark(row.id);
+        }).then(async () => {
+        // 当用户点击确定按钮的时候触发
+        let result = await this.$API.trademark.reqDeleteTradeMark(row.id);
        if (result.code == 200) {
         // 如果删除成功
        this.$message({

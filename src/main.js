@@ -35,9 +35,10 @@ Vue.use(ElementUI, { locale })
 
 // 引入相关API请求接口
 import API from '@/api/product_index';
+import CategorySelect from '@/components/CategorySelect'
 // 组件实例的原型的原型指向Vue.prototype  任意组件可以使用相关接口
 Vue.prototype.$API = API;
-
+Vue.component(CategorySelect.name,CategorySelect);
 
 Vue.config.productionTip = false
 
