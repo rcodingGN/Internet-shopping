@@ -47,7 +47,7 @@
                             <!-- 编辑模式 -->
                             <el-input v-model="row.valueName" placeholder="请输入属性值名称" size="mini" v-if="row.flag" @blur="toLook(row)" @keyup.native.enter="toLook(row)"></el-input>
                             <!-- 查看模式 -->
-                            <span v-else @click="row.flag = true" style="display:block;height:23px">{{row.valueName}}</span>
+                            <span v-else @click="row.flag = true" style="display:block;">{{row.valueName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" label="操作" width="width">
@@ -146,7 +146,23 @@ export default {
         },
         // 失去焦点的事件 转为span展示
         toLook(row) {
-            row.flag = false;
+            // 如果属性值为空，不能作为新的属性值，需要提醒用户添加新的属性值
+            // row 是用户当前添加的最新的属性值
+            // 编辑模式转查看模式
+            if (row.valueName.trim() == '') {
+                this.$message('请你输入一个非空值')
+                return
+            }
+            // 新增的属性值不能与已有的属性值重复
+            let isRepat = this.attrInfo.attrValueList.some(item=>{
+                // row是最新新增的属性值，也是数组的最后一个数值，判断的时候需要将自己剔除，不能与自己判断
+                // 需要将row从数组里面判断的时候去除
+                if (row!==item) {
+                   return row.valueName == item.valueName; 
+                }
+            })
+            if (isRepat) return;
+            row.flag = false; 
         }
     },
 
