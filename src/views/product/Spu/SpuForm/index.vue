@@ -1,9 +1,9 @@
 <template>
     <div>
-        <el-form ref="form" label-width="80px">
+        <el-form ref="form" label-width="80px" :model="spu">
             <!-- SPU名称 -->
             <el-form-item label="SPU名称">
-                <el-input placeholder="SPU名称" value=''></el-input>
+                <el-input placeholder="SPU名称" v-model="spu.spuName"></el-input>
             </el-form-item>
             <!-- 品牌 -->
             <el-form-item label="品牌">
@@ -13,7 +13,7 @@
             </el-form-item>
             <!-- SPU描述 -->
             <el-form-item label="SPU描述">
-                <el-input type="textarea" rows="4" placeholder="描述" value=''></el-input>
+                <el-input type="textarea" rows="4" placeholder="描述"></el-input>
             </el-form-item>
             <!-- SPU图片 -->
             <el-form-item label="SPU图片">
