@@ -96,7 +96,7 @@ export default {
         //     this.getSpuList();
         // }
         // 当分页器的某一个数据条数发生变化的回调
-        handleSizeChange(){
+        handleSizeChange(limit){
             this.limit = limit;
             this.getSpuList();
        },
