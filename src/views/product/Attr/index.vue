@@ -25,6 +25,10 @@
                         <template slot-scope="{row,index}">
                             <el-button type="warning" icon="el-icon-edit" size="mini" @click="updataAttr(row)"></el-button>
                             <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                            <!-- 气泡确认框 -->
+                                <!-- <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red" :title="`确定删除${row.valueName}吗？`" @onconfirm="deleteAttrrValue($index)">
+                                    <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference"></el-button>
+                                </el-popconfirm> -->
                         </template>
                     </el-table-column>
                 </el-table>

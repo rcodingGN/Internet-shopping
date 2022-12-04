@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card style="margin:20px 0px">
-            <CategorySelect @getCategoryId="getCategoryId"></CategorySelect>
+            <CategorySelect @getCategoryId="getCategoryId" :show="scene!=0"></CategorySelect>
         </el-card>
         <el-card>
             <!-- 底部这里将来有三个部分切换 -->
@@ -17,10 +17,13 @@
                     </el-table-column>
                     <el-table-column prop="prop" label="操作" width="width">
                         <template slot-scope="{row,$index}">
-                            <hint-button type="success" icon="el-icon-plus" size="mini" title="添加spu"></hint-button>
-                            <hint-button type="warning" icon="el-icon-edit" size="mini" title="修改spu" @click="updateSpu(row)"></hint-button>
+                            <hint-button type="success" icon="el-icon-plus" size="mini" title="添加spu"  @click="addSpu"></hint-button>
+                            <!-- 注意！！！！这里点击后会报错，学习完成后查找原因 -->
+                            <hint-button type="warning" icon="el-icon-edit" size="mini" title="修改spu" @click="updataSpu(row)"></hint-button>
                             <hint-button type="info" icon="el-icon-info" size="mini" title="查看当前spu全部sku列表"></hint-button>
-                            <hint-button type="danger" icon="el-icon-delete" size="mini" title="删除spu"></hint-button>
+                            <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red" :title="`确定删除${row.spuName}吗？`" @onconfirm="deleteSpu(row)">
+                                    <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference"></el-button>
+                                </el-popconfirm>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -49,7 +52,7 @@ export default {
             category2Id: '',
             category3Id: '',
             // 控制三级联动的可操作性
-            show: true,
+            // show: true,
             // 当前第几页
             page:1, 
             // 每一页展示多少条数据
@@ -103,16 +106,36 @@ export default {
     //    添加Spu按钮的回调
        addSpu(){
         this.scene = 1
+        // 通知子组件spuform发请求 -- 两个请求
+        // console.log(this.$refs.spu.addSpuData());
+        this.$refs.spu.addSpuData(this.category3Id);
        },
     //    修改某一个spu
-    updateSpu(row){
+    updataSpu(row){
         this.scene = 1
         // 获取子组件spuform
+        // console.log(this.$refs);
         this.$refs.spu.initSpuData(row);
     },
     // 自定义事件回调（spuform）
-    changeScene(scene){
+    changeScene({scene,flag}){
+        // flag这个形参为了区分保存按钮是添加还是修改
         this.scene = scene;
+        // 子组件通知父组件切换场景，需要再次获取spu列表的数据进行展示
+        this.getSpuList(this.page);
+        if (flag == "修改") {
+            this.getSpuList(this.page)
+        }else{
+            this.getSpuList()
+        }
+    },
+    // 删除spu的回调
+   async deleteSpu(row){
+        let result = await this.$API.Spu.reqDeleteSpu(row.id);
+        if (result.code == 200) {
+            this.$message({type:'success',message:'删除成功'})
+            this.getSpuList(this.records.length>1?this.page:this.page-1);
+        }
     }
     }
 }
