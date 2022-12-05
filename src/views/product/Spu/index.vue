@@ -17,7 +17,7 @@
                     </el-table-column>
                     <el-table-column prop="prop" label="操作" width="width">
                         <template slot-scope="{row,$index}">
-                            <hint-button type="success" icon="el-icon-plus" size="mini" title="添加spu"  @click="addSpu"></hint-button>
+                            <hint-button type="success" icon="el-icon-plus" size="mini" title="添加sku"  @click="addSku(row)"></hint-button>
                             <!-- 注意！！！！这里点击后会报错，学习完成后查找原因 -->
                             <hint-button type="warning" icon="el-icon-edit" size="mini" title="修改spu" @click="updataSpu(row)"></hint-button>
                             <hint-button type="info" icon="el-icon-info" size="mini" title="查看当前spu全部sku列表"></hint-button>
@@ -136,6 +136,11 @@ export default {
             this.$message({type:'success',message:'删除成功'})
             this.getSpuList(this.records.length>1?this.page:this.page-1);
         }
+    },
+    // 添加sku按钮的回调
+    addSku(row){
+        // 切换场景为2
+        this.scene = 2;
     }
     }
 }
