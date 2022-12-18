@@ -4,18 +4,17 @@
         <el-form :inline="true" class="demo-form-inline" :model="cForm">
             <el-form-item label="一级分类">
                 <el-select  placeholder="请选择" v-model="cForm.category1Id" @change="handler1" :disabled="show">
-                    <el-option :label="c1.name" :value="c1.id" v-for="(c1,index) in list1" :key="c1.id"></el-option>
+                    <el-option :label="c1.name" v-for="(c1,index) in list1" :key="c1.id" :value="c1.id"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="二级分类">
                 <el-select  placeholder="请选择" v-model="cForm.category2Id" @change="handler2" :disabled="show">
-                     <el-option :label="c2.name" :value="c2.id" v-for="(c2,index) in list2" :key="c2.id"></el-option>
-                   
+                     <el-option :label="c2.name" v-for="(c2,index) in list2" :key="c2.id" :value="c2.id"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="三级分类">
-                <el-select  placeholder="请选择" v-model="cForm.category3Id" @change="handler3" :disabled="show">
-                     <el-option :label="c3.name" :value="c3.id" v-for="(c3,index) in list3" :key="c3.id"></el-option>
+                <el-select placeholder="请选择" v-model="cForm.category3Id" @change="handler3" :disabled="show">
+                     <el-option :label="c3.name" v-for="(c3,index) in list3" :key="c3.id" :value="c3.id"></el-option>
                 </el-select>
             </el-form-item>
            

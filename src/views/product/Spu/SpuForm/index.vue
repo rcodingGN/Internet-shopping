@@ -8,7 +8,7 @@
             <!-- 品牌 -->
             <el-form-item label="品牌">
                 <el-select placeholder="请选择品牌" v-model="spu.tmId">
-                    <el-option :label="tm.tmName" value="value" v-for="(tm, index) in tradeMarkList" :key="tm.id"></el-option>
+                    <el-option :label="tm.tmName" :value="tm.id" v-for="(tm, index) in tradeMarkList" :key="tm.id"></el-option>
                 </el-select>
             </el-form-item>
             <!-- SPU描述 -->
@@ -33,7 +33,7 @@
             </el-form-item>
             <!-- 销售属性 -->
             <el-form-item label="销售属性">
-                <el-select :placeholder="`还有${unSelectSaleAttr.length}可以选择`" value="value" v-model="attrIdAndAttrName">
+                <el-select :placeholder="`还有${unSelectSaleAttr.length}可以选择`" v-model="attrIdAndAttrName">
                     <el-option :label="unselect.name" :value="`${unselect.id}:${unselect.name}`" v-for="(unselect, index) in unSelectSaleAttr" :key="unselect.id"></el-option>
                 </el-select>
                 <el-button type="primary" icon="el-icon-plus" :disabled="!attrIdAndAttrName" @click="addSaleAttr">添加销售属性</el-button>
