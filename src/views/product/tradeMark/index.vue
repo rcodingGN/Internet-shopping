@@ -180,8 +180,7 @@ export default {
       // 解构参数
       const { page, limit } = this;
       // 获取品牌列表接口
-      let result = await this.$API.trademark.reqTradeMarkList(page, limit);
-    //   console.log(result);      // console.log(result);
+      let result = await this.$API.trademark.reqTradeMarkList(page, limit);   
       if (result.code == 200) {
         // 分别是数据总数与列表数组
         this.total = result.data.total;
