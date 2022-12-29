@@ -30,6 +30,9 @@
                         <template slot="footer">
                         <span>日访问量 1234</span> 
                         </template>
+                        <template slot="charts">
+                            <lineCharts></lineCharts>
+                        </template>
                     </Detail>
                 </el-card>
             </el-col>
@@ -37,6 +40,9 @@
                 <el-card>
                     <!-- 第三个card -->
                     <Detail title="支付笔数" count="88460">
+                        <template slot="charts">
+                            <barCharts></barCharts>
+                        </template>
                         <template slot="footer">
                         <span>转换率56%</span> 
                         </template>
@@ -47,6 +53,9 @@
                 <el-card>
                     <!-- 第四个card -->
                     <Detail title="运营活动效果" count="78%">
+                        <template slot="charts">
+                            <progressCharts></progressCharts>
+                        </template>
                         <template slot="footer">
                             <span>
                                 周同比&nbsp;&nbsp;56.67%&nbsp;
@@ -61,17 +70,22 @@
                     </Detail>
                 </el-card>
             </el-col>
-
         </el-row>
     </div>
 </template>
 
 <script>
 import Detail from './Detail'
+import lineCharts from './lineChart'
+import barCharts from './barChart'
+import progressCharts from './progressChart'
 export default {
     name: '',
     components: {
-        Detail
+        Detail,
+        lineCharts,
+        barCharts,
+        progressCharts
     }
 }
 </script>

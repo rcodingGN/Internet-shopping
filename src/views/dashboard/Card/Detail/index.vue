@@ -6,7 +6,9 @@
         </div>
         <div class="card-content">{{count}}</div>
         <div class="card-charts">
-            <slot name="charts"></slot>
+            <slot name="charts">
+
+            </slot>
         </div>
         <div class="card-footer">
             <slot name="footer"></slot>
@@ -17,7 +19,7 @@
 <script>
 export default {
     name:'Detail',
-    props:['title','count0 ']
+    props:['title','count']
 
 }
 </script>
@@ -37,6 +39,6 @@ export default {
 }
 .card-footer{
     border-top: 1px solid #eee;
-    padding: 5px 0px;
+    padding: 4px 0px;
 }
 </style>

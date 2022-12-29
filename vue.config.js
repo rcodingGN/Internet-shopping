@@ -38,7 +38,7 @@ module.exports = {
             errors: true
         },
         // 因为更新换了真实的接口，所以mock的数据不在需要
-        // before: require('./mock/mock-server.js')
+        before: require('./mock/mock-server.js'),
 
         // 配置代理跨域
         proxy: {
